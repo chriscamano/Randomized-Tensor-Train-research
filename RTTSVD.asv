@@ -46,14 +46,11 @@ size(E)
 T=tensor(E,[4 4 4 4])
 size(T)
 
-% T_m=reshape(T,[4 64]) (Tensor version)
-T_m=tenmat(T,[1],[2 3 4])
-size(T_m)
-
-
+% T_m=reshape(T,[4 64])
+T_m=tenmat(T,[1,2],[3 4])
 %compute SVD then assemble SVD network. 
 class(T_m)
-[U S V]=svd(cast(T_m,"matrix"),'econ');
+[U S V]=svd(T_m,'econ');
 U_tt=tt_tensor(U);
 S_tt=tt_tensor(S);
 V_tt=tt_tensor(V);
