@@ -23,24 +23,27 @@ size(tt_y)
 %Line 2.
 
 tt_x=tt_y;
-core(tt_x)
+core(tt_x,1)
+tt_x.core
+size(tt_x.core)
+
+cr=tt_x.core;
+ps=tt_x.ps;
+
 %Line 3:
 for n=4:-1:2
    disp('=====================')
    %Line 4
    n
-   dim_core_n=size(core(tt_x,n))
    H=unfold_H(core(tt_x,n));
-   [Q,R]=qr(H.');
+   [Q,R]=qr(H');
    disp('size Q')
-   size(Q.')
-   H=reshape(Q.',dim_core_n); %Tensorize
-   tt_x.core{n}=H;
+   size(Q')
+   tt_x.core( tt_x.ps(n): tt_x.ps(n+1)-1)=reshape(H,1,[]);
    
    %line 5
    V=unfold_V(core(tt_y,n-1))*R.'; %V* R^T
-   V=reshape(V,size(core(tt_y,n-1))); % Tensorize
-   tt_x.core{n-1}=V;
+   tt_x.core( tt_x.ps(n-1): tt_x.ps(n)-1)=reshape(V,1,[]);
    disp('loop iteration complete')
 end
 
