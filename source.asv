@@ -1,5 +1,0 @@
-% Implemented algorithm described on page 2301 of original paper 
-% by oseledetss Algorithm 1. TT-SVD.
-Pre
-
-function [U,S,VTN]=TT_SVD(TN,ep)
