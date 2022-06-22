@@ -21,11 +21,9 @@ size(tt_y)
   
 
 %Line 2.
-tt_w=tt_y; %create copy of original tensor to test accuracy later on. 
-tt_x=tt_w;
 
+tt_x=tt_y;
 core(tt_x)
-
 %Line 3:
 for n=4:-1:2
    disp('=====================')
@@ -34,16 +32,20 @@ for n=4:-1:2
    dim_core_n=size(core(tt_x,n))
    H=unfold_H(core(tt_x,n));
    [Q,R]=qr(H.');
+   disp('size Q')
    size(Q.')
    H=reshape(Q.',dim_core_n); %Tensorize
-   tt.core{n}=H;
+   tt_x.core{n}=H;
    
    %line 5
-   V=unfold_V(core(tt_w,n-1))*R.'; %V* R^T
-   V=reshape(V,size(core(tt_w,n-1))); % Tensorize
-   cores_w{n-1}=V;
+   V=unfold_V(core(tt_y,n-1))*R.'; %V* R^T
+   V=reshape(V,size(core(tt_y,n-1))); % Tensorize
+   tt_x.core{n-1}=V;
    disp('loop iteration complete')
 end
+
+
+
 %test for accuracy
 disp('norm test')
 norm(tt_y)-norm(tt_w)
@@ -61,6 +63,7 @@ function H=unfold_H(core)
   
   [x y z]=size(core);
   H=reshape(core,[x y*z]);
+  disp('size H')
   size(H)
 end
 
