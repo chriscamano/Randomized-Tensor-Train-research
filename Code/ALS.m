@@ -12,18 +12,17 @@ disp('------------------------------------------------')
 A=randn(8,2);
 T=reshape(A,[2 2 2 2]);
 
-%construct an order 4 tensor with error threshold .1%
+%construct an order 4 tensor train
 tt_y=tt_tensor(T)
 disp('Size of TT')
 size(tt_y)
 
 %Line 2.
-tt_x=tt_tensor(T);
+tt_x=tt_tensor(tt_y);
 cr=tt_x.core;
 ps=tt_x.ps;
+
 %Line 3:
-
-
 disp('╔═════════════════════════╗')
 disp( "  Right to left Orthogonalization Algorithm")
 disp('╚═════════════════════════╝')
@@ -37,34 +36,22 @@ for n=4:-1:2
     %---------------------------------------
     
     %Line 4
-    %---------------------------------------
     H = unfold_H(core(tt_x,n));
     [Q,R] = qr(H',0);
     
     % update value of tensor array with orthogonal basis from QR
     % formula for array manip taken from tt_toolbox docs
-    %before
-    cr(ps(n) : ps(n+1)-1)
-    tt_y.core(ps(n) : ps(n+1)-1)
-    
-    cr(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
-    %after
-    cr(ps(n) : ps(n+1)-1)
-    tt_y.core(ps(n) : ps(n+1)-1)
-    core(tt_y,n)
-    %---------------------------------------
-    
+    tt_x.core(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
+  
     %line 5
-    %---------------------------------------
     V = unfold_V(core(tt_y,n-1))*R'; %V* R^T
-    cr(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
-    %---------------------------------------
+    tt_x.core(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
     
     %---------------------------------------
     fprintf(' loop iteration %d complete \n',n)
     fprintf(' -----------------------------\n\n')
     %---------------------------------------
-    core(tt_x,4)
+
 end
 
 
@@ -74,8 +61,6 @@ disp('╔═══════════════════════�
 disp( "           Error analysis step")
 disp('╚═════════════════════════╝')
 
-core(tt_x,4)
-core(tt_y,4)
 %core(tt_x,4)'*core(tt_x,4)
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('   Orthogonality check G_3*G_3')
