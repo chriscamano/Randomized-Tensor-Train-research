@@ -63,12 +63,20 @@ disp('╚═══════════════════════�
 
 %core(tt_x,4)'*core(tt_x,4)
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-disp   ('   Orthogonality check G_3*G_3')
+disp   ('   Orthogonality testing')
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+for n=1:4
+ %---------------------------------------
+ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+ fprintf(' Testing core %d\n',n)
+ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+ %---------------------------------------
+    
+    A=unfold_H(core(tt_x,n))'*unfold_H(core(tt_x,n))
+    %A=unfold_H(core(tt_x,3))'*unfold_H(core(tt_x,3))
+    heatmap(A,'Colormap',bone)
+end
 
-A=core(tt_x,4)'*core(tt_x,4)
-%A=unfold_H(core(tt_x,3))'*unfold_H(core(tt_x,3))
-heatmap(A,'Colormap',bone)
 
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('       TT norm test')

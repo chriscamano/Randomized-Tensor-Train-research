@@ -36,36 +36,22 @@ for n=4:-1:2
     %---------------------------------------
     
     %Line 4
-    %---------------------------------------
     H = unfold_H(core(tt_x,n));
     [Q,R] = qr(H',0);
     
     % update value of tensor array with orthogonal basis from QR
     % formula for array manip taken from tt_toolbox docs
-    
-    %before~debug
-    cr(ps(n) : ps(n+1)-1)
-    tt_y.core(ps(n) : ps(n+1)-1)
-    
-    cr(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
-    %after
-    cr(ps(n) : ps(n+1)-1)
-    tt_y.core(ps(n) : ps(n+1)-1)
-    
-    core(tt_y,n)
-    %---------------------------------------
-    
+    tt_x.core(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
+  
     %line 5
-    %---------------------------------------
     V = unfold_V(core(tt_y,n-1))*R'; %V* R^T
-    cr(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
-    %---------------------------------------
+    tt_x.core(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
     
     %---------------------------------------
     fprintf(' loop iteration %d complete \n',n)
     fprintf(' -----------------------------\n\n')
     %---------------------------------------
-    core(tt_x,4)
+
 end
 
 
@@ -75,16 +61,22 @@ disp('╔═══════════════════════�
 disp( "           Error analysis step")
 disp('╚═════════════════════════╝')
 
-core(tt_x,4)
-core(tt_y,4)
 %core(tt_x,4)'*core(tt_x,4)
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-disp   ('   Orthogonality check G_3*G_3')
+disp   ('   Orthogonality testing')
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+for n=2:4
+ %---------------------------------------
+ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+ fprintf(' Testing core %d\n',n)
+ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+ %---------------------------------------
+    
+    A=unfold_H(core(tt_x,n))'*unfold_H(core(tt_x,n))
+    %A=unfold_H(core(tt_x,3))'*unfold_H(core(tt_x,3))
+    heatmap(A,'Colormap',bone)
+end
 
-A=core(tt_x,4)'*core(tt_x,4)
-%A=unfold_H(core(tt_x,3))'*unfold_H(core(tt_x,3))
-heatmap(A,'Colormap',bone)
 
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('       TT norm test')
@@ -112,8 +104,10 @@ function H=unfold_H(core)
     return;
   end
   
-  [x y z]=size(core);
-  H=reshape(core,[x y*z]);
+  A=size(core);
+  m=max(A)
+  
+  H=reshape(permute(core,[m),[x y*z]);
 end
 
 function V=unfold_V(core)
