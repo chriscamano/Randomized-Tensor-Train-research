@@ -22,49 +22,47 @@ size(tt_y)
 
 %Line 2.
 
-tt_x=tt_y;
-core(tt_x,1)
-tt_x.core
-size(tt_x.core)
 
+
+tt_x=tt_y;
+cr=tt_x.core;
+ps=tt_x.ps;
+
+core(tt_x)
 %Line 3:
 for n=4:-1:2
-   disp('=====================')
-   %Line 4
-   n
-   H=unfold_H(core(tt_x,n));
-   [Q,R]=qr(H');
-   disp('size Q')
-   size(Q')
-   tt_x.core( tt_x.ps(n): tt_x.ps(n+1)-1)=reshape(H,1,[]);
-   
-   %line 5
-   V=unfold_V(core(tt_y,n-1))*R.'; %V* R^T
-   tt_x.core( tt_x.ps(n-1): tt_x.ps(n)-1)=reshape(V,1,[]);
-   disp('loop iteration complete')
+    disp('=====================')
+    n
+    size(core(tt_x,n))
+    
+    %Line 4
+    H = unfold_H(core(tt_x,n));
+    [Q,R] = qr(H',0);
+    cr(ps(n) : ps(n+1)-1) = reshape(H',1,[]);
+    
+    %line 5
+    V = unfold_V(core(tt_y,n-1))*R'; %V* R^T
+    cr(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
+    disp('loop iteration complete')
 end
 
 
 
 %test for accuracy
-disp('norm test')
-norm(tt_y)-norm(tt_w)
-disp('element test')
-tt_y(2,2,2,1)
-tt_w(2,2,2,1)
+core(tt_x,4)'*core(tt_x,4)
+disp('TT norm test')
+norm(tt_y-tt_x)
+disp('matrix norm test')
+norm(full(tt_y)-full(tt_x))
 disp('------------------------------------------------')
 
 function H=unfold_H(core)
-
   if(ismatrix(core))
       H=core;
     return;
   end
-  
   [x y z]=size(core);
   H=reshape(core,[x y*z]);
-  disp('size H')
-  size(H)
 end
 
 function V=unfold_V(core)
