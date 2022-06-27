@@ -18,7 +18,7 @@ disp('Size of TT')
 size(tt_y)
 
 %Line 2.
-tt_x=tt_tensor(T)
+tt_x=tt_tensor(T);
 cr=tt_x.core;
 ps=tt_x.ps;
 %Line 3:
@@ -43,8 +43,15 @@ for n=4:-1:2
     
     % update value of tensor array with orthogonal basis from QR
     % formula for array manip taken from tt_toolbox docs
-    cr(ps(n) : ps(n+1)-1) = reshape(R'*Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
-
+    %before
+    cr(ps(n) : ps(n+1)-1)
+    tt_y.core(ps(n) : ps(n+1)-1)
+    
+    cr(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
+    %after
+    cr(ps(n) : ps(n+1)-1)
+    tt_y.core(ps(n) : ps(n+1)-1)
+    core(tt_y,n)
     %---------------------------------------
     
     %line 5
@@ -57,18 +64,23 @@ for n=4:-1:2
     fprintf(' loop iteration %d complete \n',n)
     fprintf(' -----------------------------\n\n')
     %---------------------------------------
+    core(tt_x,4)
 end
+
+
 
 
 disp('╔═════════════════════════╗')
 disp( "           Error analysis step")
 disp('╚═════════════════════════╝')
 
-
+core(tt_x,4)
+core(tt_y,4)
 %core(tt_x,4)'*core(tt_x,4)
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('   Orthogonality check G_3*G_3')
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+
 A=core(tt_x,4)'*core(tt_x,4)
 %A=unfold_H(core(tt_x,3))'*unfold_H(core(tt_x,3))
 heatmap(A,'Colormap',bone)
