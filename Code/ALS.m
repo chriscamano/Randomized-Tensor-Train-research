@@ -35,23 +35,32 @@ disp( "  Right to left Orthogonalization Algorithm")
 disp('╚═════════════════════════╝')
 
 for n=4:-1:2
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %---------------------------------------
     fprintf('━━━━━━━━━━━━━▼━━━━━━━━━━━━━\n')
     fprintf('Current Core index:%d\n',n)
     fprintf('current core dimensions: %s\n',mat2str(size(core(tt_x,n))))
     fprintf('━━━━━━━━━━━━━▲━━━━━━━━━━━━━\n\n')
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %---------------------------------------
     
     %Line 4
+    %---------------------------------------
     H = unfold_H(core(tt_x,n));
     [Q,R] = qr(H',0);
-    cr(ps(n) : ps(n+1)-1) = reshape(Q',1,[]);
+    % update value of tensor array with orthogonal basis from QR
+    % formula for array manip taken from tt_toolbox docs
+    cr(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); 
+    %---------------------------------------
     
     %line 5
+    %---------------------------------------
     V = unfold_V(core(tt_y,n-1))*R'*R'*R'; %V* R^T
     cr(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
+    %---------------------------------------
+    
+    %---------------------------------------
     fprintf('loop iteration %d complete \n',n)
     fprintf('-----------------------------\n\n')
+    %---------------------------------------
 end
 
 disp('╔═════════════════════════╗')
