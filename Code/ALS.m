@@ -30,10 +30,17 @@ ps=tt_x.ps;
 
 core(tt_x)
 %Line 3:
+disp('╔═════════════════════════╗')
+disp( "  Right to left Orthogonalization Algorithm")
+disp('╚═════════════════════════╝')
+
 for n=4:-1:2
-    disp('=====================')
-    n
-    size(core(tt_x,n))
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    fprintf('━━━━━━━━━━━━━▼━━━━━━━━━━━━━\n')
+    fprintf('Current Core index:%d\n',n)
+    fprintf('current core dimensions: %s\n',mat2str(size(core(tt_x,n))))
+    fprintf('━━━━━━━━━━━━━▲━━━━━━━━━━━━━\n\n')
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     %Line 4
     H = unfold_H(core(tt_x,n));
@@ -43,10 +50,13 @@ for n=4:-1:2
     %line 5
     V = unfold_V(core(tt_y,n-1))*R'*R'*R'; %V* R^T
     cr(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
-    disp('loop iteration complete')
+    fprintf('loop iteration %d complete \n',n)
+    fprintf('-----------------------------\n\n')
 end
 
-
+disp('╔═════════════════════════╗')
+disp( "           Error analysis step")
+disp('╚═════════════════════════╝')
 
 %test for accuracy
 core(tt_x,4)'*core(tt_x,4)

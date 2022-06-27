@@ -30,20 +30,25 @@ ps=tt_x.ps;
 
 core(tt_x)
 %Line 3:
+disp('╔═════════════════════════╗')
+disp( "  Right to left Orthogonalization Algorithm")
+disp('╚═════════════════════════╝')
 for n=4:-1:2
-    disp('=====================')
-    n
-    size(core(tt_x,n))
+    fprintf('━━━━━━━━━━━━━▼━━━━━━━━━━━\n')
+    fprintf('Current Core index:%d\n',n)
+    fprintf('current core dimensions: %s\n',mat2str(size(core(tt_x,n))))
+    fprintf('━━━━━━━━━━━━━▲━━━━━━━━━━━\n\n')
     
     %Line 4
     H = unfold_H(core(tt_x,n));
     [Q,R] = qr(H',0);
-    cr(ps(n) : ps(n+1)-1) = reshape(H',1,[]);
+    cr(ps(n) : ps(n+1)-1) = reshape(Q',1,[]);
     
     %line 5
-    V = unfold_V(core(tt_y,n-1))*R'; %V* R^T
+    V = unfold_V(core(tt_y,n-1))*R'*R'*R'; %V* R^T
     cr(ps(n-1) : ps(n)-1) = reshape(V,1,[]);
-    disp('loop iteration complete')
+    fprintf('loop iteration %d complete \n',n)
+    fprintf('-----------------------------\n\n')
 end
 
 
@@ -54,6 +59,8 @@ disp('TT norm test')
 norm(tt_y-tt_x)
 disp('matrix norm test')
 norm(full(tt_y)-full(tt_x))
+tt_x(1,1,1,1)
+tt_y(1,1,1,1)
 disp('------------------------------------------------')
 
 function H=unfold_H(core)
