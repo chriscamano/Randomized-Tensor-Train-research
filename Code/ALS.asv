@@ -14,7 +14,6 @@ T=reshape(A,[2 2 2 2]);
 
 %construct an order 4 tensor train
 tt_y=tt_tensor(T);
-
 d=size(core(tt_y));
 d=d(1);
 
@@ -25,7 +24,6 @@ size(tt_y)
 tt_x=tt_tensor(tt_y);
 ps=tt_x.ps;
 
-
 %Line 3:
 disp('╔═════════════════════════╗')
 disp( "  Right to left Orthogonalization Algorithm")
@@ -33,15 +31,15 @@ disp('╚═══════════════════════�
 
 for n=d:-1:2
     %---------------------------------------
-    fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-    fprintf(' Current Core index:%d\n',n)
+    fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+    fprintf(' Current Core index: %d\n',n)
     fprintf(' current core dimensions: %s\n',mat2str(size(core(tt_x,n))))
-    fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+    fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
     %---------------------------------------
     
     %Line 4
     H = unfold_H(core(tt_x,n));
-    [Q,R] = qr(H',0);
+    [Q,R] = qr(H',0); %0= economy mode tall skinny qr
     
     % update value of tensor array with orthogonal basis from QR
     % formula for array manip taken from tt_toolbox docs
@@ -53,7 +51,6 @@ for n=d:-1:2
     
     %---------------------------------------
     fprintf(' loop iteration %d complete \n',n)
-    fprintf(' -----------------------------\n\n')
     %---------------------------------------
 
 end
@@ -65,16 +62,11 @@ disp('╔═══════════════════════�
 disp( "           Error analysis step")
 disp('╚═════════════════════════╝')
 
-%core(tt_x,4)'*core(tt_x,4)
-fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-disp   ('   Orthogonality testing')
-fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
-
 for n=1:4
  %---------------------------------------
- fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
- fprintf('    Orthogonality testing, %d\n',n)
- fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+ fprintf('   Orthogonality testing, Core:%d\n',n)
+ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
  %---------------------------------------
     A=unfold_H(core(tt_x,n))'*unfold_H(core(tt_x,n))
 end
@@ -123,7 +115,7 @@ end
 function V=unfold_V(core)
 core=squeeze(core);
   if(ismatrix(core))
-      V=core
+      V=core;
     return;
   end
   

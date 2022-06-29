@@ -10,11 +10,10 @@
 %Initialize tensor with dimensions 3x4x5
 disp('------------------------------------------------')
 A=randn(8,2);
-T=reshape(A,[2 2 2 3]);
+T=reshape(A,[2 2 2 2]);
 
 %construct an order 4 tensor train
 tt_y=tt_tensor(T);
-
 d=size(core(tt_y));
 d=d(1);
 
@@ -24,7 +23,6 @@ size(tt_y)
 %Line 2.
 tt_x=tt_tensor(tt_y);
 ps=tt_x.ps;
-
 
 %Line 3:
 disp('╔═════════════════════════╗')
@@ -41,11 +39,11 @@ for n=d:-1:2
     
     %Line 4
     H = unfold_H(core(tt_x,n));
-    [Q,R] = qr(H',0);
+    [Q,R] = qr(H',0); %0= economy mode tall skinny qr
     
     % update value of tensor array with orthogonal basis from QR
     % formula for array manip taken from tt_toolbox docs
-    tt_x.core(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); %R'*Q' taken from  pg 81 of Patrick Gelß 2017 dissertation
+    tt_x.core(ps(n) : ps(n+1)-1) = reshape(Q',1,[]); 
   
     %line 5
     V = unfold_V(core(tt_y,n-1))*R'; %V* R^T
@@ -56,9 +54,6 @@ for n=d:-1:2
     %---------------------------------------
 
 end
-
-
-
 
 disp('╔═════════════════════════╗')
 disp( "           Error analysis step")
@@ -74,7 +69,7 @@ for n=1:4
 end
 size(core(tt_x,2))
 
-% heatmap(A,'Colormap',bone)
+heatmap(unfold_H(core(tt_x,2))'*unfold_H(core(tt_x,2)),'Colormap',bone)
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('       TT norm test')
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
@@ -110,7 +105,7 @@ core=squeeze(core);
 %   end
 % 
 %   [x,y,z]=deal(A(1),A(2),A(3))
-  [x,y,z]=size(core);
+  [x y z]=size(core);
   H=reshape(core,[x,y*z]);
 end
 
