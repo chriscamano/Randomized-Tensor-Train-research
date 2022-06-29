@@ -73,7 +73,7 @@ fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━�
 for n=1:4
  %---------------------------------------
  fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
- fprintf(' Testing core %d\n',n)
+ fprintf('    Orthogonality testing, %d\n',n)
  fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
  %---------------------------------------
     A=unfold_H(core(tt_x,n))'*unfold_H(core(tt_x,n))
@@ -107,13 +107,17 @@ core=squeeze(core);
       H=core;
     return;
   end
-  index_max=find(max(size(core)));
-  A=size(core);
-  temp=A(1);
-  A(1)=max(size
-  
-  [x y z]=size(core);
-  H=reshape(core,[x y*z]);
+%   A=size(core);
+%   if(A(1)~= max(size(core)))
+%       index_max=find(A==max(size(core)));
+%       temp=A(1);
+%       A(1)=max(size(core));
+%       A(index_max)=temp;
+%   end
+% 
+%   [x,y,z]=deal(A(1),A(2),A(3))
+  [x,y,z]=size(core);
+  H=reshape(core,[x,y*z]);
 end
 
 function V=unfold_V(core)
