@@ -13,21 +13,25 @@ A=randn(8,2);
 T=reshape(A,[2 2 2 2]);
 
 %construct an order 4 tensor train
-tt_y=tt_tensor(T)
+tt_y=tt_tensor(T);
+
+d=size(core(tt_y));
+d=d(1);
+
 disp('Size of TT')
 size(tt_y)
 
 %Line 2.
 tt_x=tt_tensor(tt_y);
-cr=tt_x.core;
 ps=tt_x.ps;
+
 
 %Line 3:
 disp('╔═════════════════════════╗')
 disp( "  Right to left Orthogonalization Algorithm")
 disp('╚═════════════════════════╝')
 
-for n=4:-1:2
+for n=d:-1:2
     %---------------------------------------
     fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
     fprintf(' Current Core index:%d\n',n)
@@ -65,19 +69,18 @@ disp('╚═══════════════════════�
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('   Orthogonality testing')
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+
 for n=1:4
  %---------------------------------------
  fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
  fprintf(' Testing core %d\n',n)
  fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
  %---------------------------------------
-    
     A=unfold_H(core(tt_x,n))'*unfold_H(core(tt_x,n))
-    %A=unfold_H(core(tt_x,3))'*unfold_H(core(tt_x,3))
-    heatmap(A,'Colormap',bone)
 end
+size(core(tt_x,2))
 
-
+% heatmap(A,'Colormap',bone)
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
 disp   ('       TT norm test')
 fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
@@ -99,17 +102,28 @@ tt_y(1,1,1,1)
 disp('------------------------------------------------')
 
 function H=unfold_H(core)
+core=squeeze(core);
   if(ismatrix(core))
       H=core;
     return;
   end
-  
-  [x y z]=size(core);
-  H=reshape(core,[x y*z]);
+%   A=size(core);
+%   if(A(1)~= max(size(core)))
+%       index_max=find(A==max(size(core)));
+%       temp=A(1);
+%       A(1)=max(size(core));
+%       A(index_max)=temp;
+%   end
+% 
+%   [x,y,z]=deal(A(1),A(2),A(3))
+  [x,y,z]=size(core)
+  H=reshape(core,[x,y*z]);
 end
 
 function V=unfold_V(core)
+core=squeeze(core);
   if(ismatrix(core))
+      V=core
     return;
   end
   
