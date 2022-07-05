@@ -54,10 +54,23 @@ for n=d:-1:2
     %---------------------------------------
 
 end
+%space
+
+
+
+
+
+
+
+
+
+
 
 disp('╔═════════════════════════╗')
 disp( "           Error analysis step")
 disp('╚═════════════════════════╝')
+
+
 
 for n=1:4
  %---------------------------------------
@@ -66,6 +79,9 @@ for n=1:4
  fprintf(' ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
  %---------------------------------------
     A=unfold_H(core(tt_x,n))'*unfold_H(core(tt_x,n))
+    %heatmap(unfold_H(core(tt_x,n)),'Colormap',bone)
+    %heatmap(A,'Colormap',bone)
+    
 end
 size(core(tt_x,2))
 
@@ -105,6 +121,9 @@ core=squeeze(core);
 %   end
 % 
 %   [x,y,z]=deal(A(1),A(2),A(3))
+
+%4,2,2
+%2,2,4 
   [x y z]=size(core);
   H=reshape(core,[x,y*z]);
 end
