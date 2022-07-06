@@ -49,7 +49,7 @@
 % tensor train format", Comp. Phys. Comm. 2014, http://dx.doi.org/10.1016/j.cpc.2013.12.017
 %
 
-function [x,theta,testdata]=dmrg_eig_qr(A, tol, varargin)
+function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Number of eigenstates
     b = 1;
     % Threshold on the local size between direct-iterative local solving
@@ -70,11 +70,11 @@ function [x,theta,testdata]=dmrg_eig_qr(A, tol, varargin)
     % Exit tol
     tol_exit = tol;
     % Verb
-    verb=3;
+    verb=1;
     % Random enrichment rank
     kickrank = 0;
     % Number of blocks to consider: 2 or 1
-    numblocks = 1;
+    numblocks = 2;
     
     %___________________________________________________________________
     % Initial guess
