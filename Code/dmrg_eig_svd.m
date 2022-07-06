@@ -74,7 +74,7 @@ function [x,theta,testdata]=dmrg_eig_svd(A, tol, varargin)
     % Random enrichment rank
     kickrank = 0;
     % Number of blocks to consider: 2 or 1
-    numblocks = 2;
+    numblocks = 1;
     
     %___________________________________________________________________
     % Initial guess
@@ -184,7 +184,7 @@ function [x,theta,testdata]=dmrg_eig_svd(A, tol, varargin)
     for i=d:-1:2
         % QR (Gauge conditions) right-to-left
         ux = reshape(crx{i}, rx(i), n(i)*rx(i+1));
-        [ux,vx]=qr(ux.', 0);
+        [ux,vx]=svd(ux.', 0);
         cr2 = reshape(crx{i-1}, rx(i-1)*n(i-1), rx(i));
         cr2 = cr2*vx.';
         rx(i) = size(ux,2);
@@ -438,7 +438,7 @@ function [x,theta,testdata]=dmrg_eig_svd(A, tol, varargin)
                 zx = randn(rx(i)*n(i), kickrank);
                 % Concatenate the bases and reinforce the gauges.
                 % In future: insert symmetries here?
-                [ux,rv]=qr([ux,zx], 0);
+                [ux,rv]=svd([ux,zx], 0);
                 rv = rv(:,1:r);
                 vx = vx*rv.';
             end;

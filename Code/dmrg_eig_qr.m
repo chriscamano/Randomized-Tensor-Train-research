@@ -70,7 +70,7 @@ function [x,theta,testdata]=dmrg_eig_qr(A, tol, varargin)
     % Exit tol
     tol_exit = tol;
     % Verb
-    verb=3;
+    verb=1;
     % Random enrichment rank
     kickrank = 0;
     % Number of blocks to consider: 2 or 1

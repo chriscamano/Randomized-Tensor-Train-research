@@ -15,6 +15,9 @@ B=tt_matrix(A);
 
 %QR dmrg_eig (base case)
 %____________________________________________________________________
+disp('╔═════════════════════════╗')
+disp( "        QR based DMRG eigen test")
+disp('╚═════════════════════════╝')
 [x,theta,out]=dmrg_eig_qr(B,1e-6)
 %Ensure that compute dmrg results are consistent by checking norm for
 %Ax=lambdaX
@@ -22,6 +25,14 @@ norm(A*full(x))-norm(theta*full(x))
 
 %SVD dmrg_eig (base case)
 %____________________________________________________________________
+disp('╔═════════════════════════╗')
+disp( "        SVD based DMRG eigen test")
+disp('╚═════════════════════════╝')
+[x,theta,out]=dmrg_eig_svd(B,1e-6)
+%Ensure that compute dmrg results are consistent by checking norm for
+%Ax=lambdaX
+norm(A*full(x))-norm(theta*full(x))
+
 
 %rSVD dmrg_eig (base case)
 %____________________________________________________________________
