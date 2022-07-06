@@ -124,6 +124,10 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     d = A.d;
     n = A.n;
     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Implement dynamic target rank sampling here. 
+    r=2;
+    
+    
     %___________________________________________________________________
     % Initialize from random initial state if not passed otherwise
     if (isempty(x))
@@ -184,7 +188,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     for i=d:-1:2
         % QR (Gauge conditions) right-to-left
         ux = reshape(crx{i}, rx(i), n(i)*rx(i+1));
-        [ux,vx]=rsvd(ux.',n/2,1);
+        [ux,vx]=rsvd(ux.',r,1);
         cr2 = reshape(crx{i-1}, rx(i-1)*n(i-1), rx(i));
         cr2 = cr2*vx.';
         rx(i) = size(ux,2);
@@ -439,7 +443,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
                 zx = randn(rx(i)*n(i), kickrank);
                 % Concatenate the bases and reinforce the gauges.
                 % In future: insert symmetries here?
-                [ux,rv]=rsvd([ux,zx],n/2,1);
+                [ux,rv]=rsvd([ux,zx],r,1);
                 rv = rv(:,1:r);
                 vx = vx*rv.';
             end;
@@ -482,7 +486,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
                 
                 % Concatenate the bases and reinforce the gauges.
                 % In future: insert symmetries here?
-                [vx,rv]=rsvd([vx,zx],n/2,1);
+                [vx,rv]=rsvd([vx,zx],r,1);
                 rv = rv(:,1:r);
                 ux = ux*rv.';
             end;
