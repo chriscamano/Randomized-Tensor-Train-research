@@ -49,7 +49,7 @@
 % tensor train format", Comp. Phys. Comm. 2014, http://dx.doi.org/10.1016/j.cpc.2013.12.017
 %
 
-function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
+function [x,theta,testdata]=dmrg_eig_qr(A, tol, varargin)
     % Number of eigenstates
     b = 1;
     % Threshold on the local size between direct-iterative local solving
@@ -75,9 +75,11 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
     kickrank = 0;
     % Number of blocks to consider: 2 or 1
     numblocks = 2;
+    
     %___________________________________________________________________
     % Initial guess
     x=[];
+    
     %___________________________________________________________________
     for i=1:2:length(varargin)-1
         switch lower(varargin{i})
@@ -111,14 +113,17 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
                 error('Unknown tuning parameter "%s"', varargin{i});
         end;
     end;
+    
     %___________________________________________________________________
     % Extract the dimensions
     if (~isa(A, 'tt_matrix'))
         error('A must be given in a tt_matrix class');
     end;
+    
     %___________________________________________________________________
     d = A.d;
     n = A.n;
+    
     %___________________________________________________________________
     % Initialize from random initial state if not passed otherwise
     if (isempty(x))
@@ -134,31 +139,38 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
             error('Inconsistent size(A) and size(x0)');
         end;
     end;
+    
     %___________________________________________________________________
     % Disable MEX if it does not exist
     if (usemex)&&(exist('eig3d_primme', 'file')<2)
         warning('MEX local solver is not found, disabled');
         usemex = false;
     end;
+    
     %___________________________________________________________________
     % More housekeeping
     ra = A.r;
     rx = x.r;
+    
     %___________________________________________________________________
     if (rx(d+1)>1)
         % Leave only the first component from the initial guess
         x = x*eye(rx(d+1),1);
         rx(d+1) = 1;
     end;
+    
     %___________________________________________________________________
     crA = core2cell(A);
     crx = core2cell(x);
+    
     %___________________________________________________________________
     % Threshold for local problems
     real_tol = (tol/sqrt(d))/resid_damp;
+    
     %___________________________________________________________________
     % Interfaces
     phixax = cell(d+1,1); phixax{1}=1; phixax{d+1}=1;
+    
     %___________________________________________________________________
     % This is some convergence output for test purposes
     testdata = cell(3,1);
@@ -166,6 +178,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
     testdata{2} = zeros(d-numblocks+1, nswp, b); % evs
     testdata{3} = zeros(d-numblocks+1, nswp); % local res or dx
     t_dmrg_eig = tic;
+    
     %___________________________________________________________________
     % Presetup: compute the initial projections
     for i=d:-1:2
@@ -185,6 +198,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
             usemex = false;
         end;
     end;
+    
     %___________________________________________________________________
     % Initial guess for EVs
     theta = rightreduce_matrix(phixax(2), crx{1}, crA(1), crx{1}, rx(1),n(1),rx(1+1), 1,ra(1),ra(1+1), rx(1),n(1),rx(1+1));
@@ -200,6 +214,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
     if (b>1)
         crx{1} = randn(rx(1), n(1), rx(2), b);
     end;
+    
     %___________________________________________________________________
     % DMRG sweeps
     swp = 1;
@@ -209,6 +224,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
     max_dx = 0;
     max_res = 0;
     max_matvecs = 0;
+    
     %___________________________________________________________________
     while (swp<=nswp)||(dir>0)
         % Extract the matrix parts, accelerate a plenty of iterations with them
@@ -285,9 +301,11 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
                 sol_prev = reshape(sol_prev, rx(i)*n(i)*n(i+1)*rx(i+2), b);
             end;
         end;
+        
         %___________________________________________________________________
         % Initial residual
         res_prev = norm(local_matvec(sol_prev, rx1,nloc,rx2,b, rx1,nloc,rx2, Phi1, A1, Phi2, 1,ra1,ra2)-sol_prev*diag(theta));
+        
         %___________________________________________________________________
         if (rx1*nloc*rx2<max_full_size) % Full solution
             %      |     |    |
@@ -316,6 +334,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
                 num_matvecs = numel(lambdaHistory);
             end;
         end;
+        
         %___________________________________________________________________
         % count the number of MatVecs
         max_matvecs = max(max_matvecs, num_matvecs);
@@ -324,11 +343,13 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
             % We need the new residual for the corresp. trunc. strategy
             res_new = norm(local_matvec(sol, rx1,nloc,rx2,b, rx1,nloc,rx2, Phi1, A1, Phi2, 1,ra1,ra2)-sol*diag(theta));
         end;
+        
         %___________________________________________________________________
         % L2-norm convergence check. 
         dx = norm(sol*(sol'*sol_prev)-sol_prev);
         max_dx = max(max_dx, dx);
         max_res = max(max_res, res_prev);
+        
         %___________________________________________________________________
         if ((dir>0)&&(i<d))||((dir<0)&&(i>1))||(numblocks==2) % SVD and enrichment
             if (dir>0)
@@ -406,6 +427,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
                 fprintf('=dmrg_eig= swp=%d, block=%d, dx=%3.3e, r=%d\n', swp, i, dx, r);
             end;
         end;
+        
         %___________________________________________________________________
         if (dir>0)&&(i<d) % Forward sweep
             ux = ux(:,1:r);
@@ -499,6 +521,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
             sol = reshape(sol, rx(i), n(i), rx(i+1), b);
             crx{i} = sol;
         end;
+        
         %___________________________________________________________________
         if (verb>2)
             % Report the debug data if necessary
@@ -520,8 +543,10 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
                 end;
             end;
         end;
+        
         %___________________________________________________________________
         i = i+dir;
+        
         %___________________________________________________________________
         % Check for the end of the sweep
         if ((dir>0)&&(i>d-numblocks+1))||((dir<0)&&(i<1))
@@ -551,6 +576,7 @@ function [x,theta,testdata]=dmrg_eig(A, tol, varargin)
             max_matvecs = 0;
         end;
     end;
+    
     %___________________________________________________________________
     crx{d} = reshape(crx{d}, rx(d), n(d), b);
     x = cell2core(tt_tensor, crx);
