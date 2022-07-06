@@ -7,7 +7,7 @@ A = randn(N,N) ;
 A = A - tril(A,-1) + triu(A,1)';
 
 B=tt_matrix(A);
-
+B.d
 
 %Basic Tests
 %____________________________________________________________________
@@ -18,9 +18,12 @@ B=tt_matrix(A);
 disp('╔═════════════════════════╗')
 disp( "        QR based DMRG eigen test")
 disp('╚═════════════════════════╝')
-[x,theta,out]=dmrg_eig_qr(B,1e-6)
+[x,theta,out]=dmrg_eig_qr(B,1e-6);
 %Ensure that compute dmrg results are consistent by checking norm for
 %Ax=lambdaX
+fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+disp   ('        norm test')
+fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
 norm(A*full(x))-norm(theta*full(x))
 
 %SVD dmrg_eig (base case)
@@ -28,12 +31,24 @@ norm(A*full(x))-norm(theta*full(x))
 disp('╔═════════════════════════╗')
 disp( "        SVD based DMRG eigen test")
 disp('╚═════════════════════════╝')
-[x,theta,out]=dmrg_eig_svd(B,1e-6)
+[x,theta,out]=dmrg_eig_svd(B,1e-6);
 %Ensure that compute dmrg results are consistent by checking norm for
 %Ax=lambdaX
+fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+disp   ('        norm test')
+fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
 norm(A*full(x))-norm(theta*full(x))
 
 
 %rSVD dmrg_eig (base case)
 %____________________________________________________________________
-
+disp('╔═════════════════════════╗')
+disp( "        rSVD based DMRG eigen test")
+disp('╚═════════════════════════╝')
+[x,theta,out]=dmrg_eig_rsvd(B,1e-6);
+%Ensure that compute dmrg results are consistent by checking norm for
+%Ax=lambdaX
+fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+disp   ('        norm test')
+fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+norm(A*full(x))-norm(theta*full(x))
