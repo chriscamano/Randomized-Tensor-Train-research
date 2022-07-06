@@ -15,25 +15,29 @@ function [U,S,V] = rsvd(A,K,q)
 %-------------------------------------------------------------------------------------
 % Antoine Liutkus  (c) Inria 2014
 
-%%modified with power iterations by Chris Camano
+%%modified with power iterations comments and new variable scheme
+%by Chris Camano
 
 
+% Sample column space of X with P matrix
 
 [M,N] = size(A);
 P = min(2*K,N);
-X = randn(N,P);
+X = randn(N,P); %consider oversampling 
 Y = A*X;
 
-%simple power iteration q times
+% simple power iteration q times
 for k=1:q
     Y = A*(A'*Y);
 end
 
+% Compute SVD on projected Y=Q'*X;
 W1 = orth(Y);
 B = W1'*A;
 [W2,S,V] = svd(B,'econ');
 U = W1*W2;
 K=min(K,size(U,2));
+
 U = U(:,1:K);
 S = S(1:K,1:K);
 V=V(:,1:K);
