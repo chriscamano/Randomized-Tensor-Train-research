@@ -2,6 +2,8 @@ function H = HamHeis(n,Jx,Jy,Jz,hx,hy,hz)
 % Heisenberg Hamiltonian
 % See https://en.wikipedia.org/wiki/Quantum_Heisenberg_model
 
+%construct tt_HamHeis right away as a tensor train
+
 %% default arguments
 if nargin < 1, n = 2; end     % number of spins
 if nargin < 2, Jx = 0.1; end  % parameter of Hxx
@@ -19,7 +21,13 @@ sigmaz = [1 0; 0 -1];
 %% Hamiltonian: Hxx
 Sxx = zeros(2^n);
 for i = 1:n-1
-    Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1)));
+    Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1)));%%write this as a tt of rank 1 and sum over rank one tensor train oseldets and how to construct TT by iterative svd core construction 
+    %compare over original script for accuracy. Use the TT_tensor
+    %constructor. Use version of TT_tensor where you pass cell array of
+    %cores or copy source code of TT_tensor sontrsutor so that you do not
+    %have to form the full matrix or vector directly. 
+    
+    
 end
 Hxx = -Jx*Sxx;
 

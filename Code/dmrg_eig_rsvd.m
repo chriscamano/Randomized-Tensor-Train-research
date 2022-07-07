@@ -131,7 +131,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     %___________________________________________________________________
     % Initialize from random initial state if not passed otherwise
     if (isempty(x))
-        x = tt_rand(n, d, b, -1);
+        x = tt_rand(n, d, 5 , -1);
     else
         if (~isa(x, 'tt_tensor'))
             error('x0 must be given in a tt_tensor class');
