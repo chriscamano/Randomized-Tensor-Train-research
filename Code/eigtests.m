@@ -1,7 +1,9 @@
 
 %% input matrix construction
 n = 10;                                          % number of spins
-H = HamHeis(n);                                  % Heisenberg Hamiltonian
+H = tt_HamHeis(n);                                  % Heisenberg Hamiltonian
+L=HamHeis(n);
+norm(full(H))-norm(L)
 %tt_H = tt_matrix(H,eps,2*ones(1,n),2*ones(1,n))  % convert to TT format
 theta=eigs(full(H),1,'smallestreal')
 class(H)

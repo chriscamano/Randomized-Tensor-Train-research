@@ -66,7 +66,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     %trunc_norm = 'resid';
     trunc_norm = 'fro';
     % Max rank
-    rmax = Inf;
+    rmax = Inf;                             %% could cause issues in the future if uncapped 'rmax', m
     % Exit tol
     tol_exit = tol;
     % Verb

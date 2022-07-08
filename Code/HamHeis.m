@@ -2,8 +2,6 @@ function H = HamHeis(n,Jx,Jy,Jz,hx,hy,hz)
 % Heisenberg Hamiltonian
 % See https://en.wikipedia.org/wiki/Quantum_Heisenberg_model
 
-%construct tt_HamHeis right away as a tensor train
-
 %% default arguments
 if nargin < 1, n = 2; end     % number of spins
 if nargin < 2, Jx = 0.1; end  % parameter of Hxx
@@ -19,64 +17,49 @@ sigmay = [0 -1i; 1i 0];
 sigmaz = [1 0; 0 -1];
 
 %% Hamiltonian: Hxx
-Sxx=tt_matrix(zeros(2^n))
+Sxx = zeros(2^n);
 for i = 1:n-1
-    Sxx=Sxx+kron(kron(tt_eye(2^(i-1)),tt_matrix(kron(sigmax,sigmax))),tt_eye(2^(n-i-1)));
-   %Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1)));
-
-    %%write this as a tt of rank 1 and sum over rank one tensor train oseldets and how to 
-    %construct TT by iterative svd core construction 
-    %compare over original script for accuracy. Use the TT_tensor
-    %constructor. Use version of TT_tensor where you pass cell array of
-    %cores or copy source code of TT_tensor sontrsutor so that you do not
-    %have to form the full matrix or vector directly. 
+    Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1)));
 end
 Hxx = -Jx*Sxx;
 
 %% Hamiltonian: Hyy
-Syy = tt_matrix(zeros(2^n));
+Syy = zeros(2^n);
 for i = 1:n-1
-    Syy=Syy+kron(kron(tt_eye(2^(i-1)),tt_matrix(kron(sigmay,sigmay))),tt_eye(2^(n-i-1)));
-    % Syy = Syy + kron3(eye(2^(i-1)),kron(sigmay,sigmay),eye(2^(n-i-1)));
+    Syy = Syy + kron3(eye(2^(i-1)),kron(sigmay,sigmay),eye(2^(n-i-1)));
 end
 Hyy = -Jy*Syy;
 
 %% Hamiltonian: Hzz
-Szz = tt_matrix(zeros(2^n));
+Szz = zeros(2^n);
 for i = 1:n-1
-    Szz=Szz+kron(kron(tt_eye(2^(i-1)),tt_matrix(kron(sigmaz,sigmaz))),tt_eye(2^(n-i-1)));
-    %Szz = Szz + kron3(eye(2^(i-1)),kron(sigmaz,sigmaz),eye(2^(n-i-1)));
+    Szz = Szz + kron3(eye(2^(i-1)),kron(sigmaz,sigmaz),eye(2^(n-i-1)));
 end
 Hzz = -Jz*Szz;
 
 %% Hamiltonian: Hx
-Sx = tt_matrix(zeros(2^n)); 
+Sx = zeros(2^n); 
 for i = 1:n
-    Sx=Sx+kron(kron(tt_eye(2^(i-1)),tt_matrix(sigmax)),tt_eye(2^(n-i)));
-    %Sx = Sx + kron3(eye(2^(i-1)),sigmax,eye(2^(n-i)));
+    Sx = Sx + kron3(eye(2^(i-1)),sigmax,eye(2^(n-i)));
 end
 Hx = -hx*Sx;
 
 %% Hamiltonian: Hy
-Sy = tt_matrix(zeros(2^n)); 
+Sy = zeros(2^n); 
 for i = 1:n
-     Sy=Sy+kron(kron(tt_eye(2^(i-1)),tt_matrix(sigmay)),tt_eye(2^(n-i)));
-     %Sy = Sy + kron3(eye(2^(i-1)),sigmay,eye(2^(n-i)));
+    Sy = Sy + kron3(eye(2^(i-1)),sigmay,eye(2^(n-i)));
 end
 Hy = -hy*Sy;
 
 %% Hamiltonian: Hz
-Sz = tt_matrix(zeros(2^n));
+Sz = zeros(2^n); 
 for i = 1:n
-     Sz=Sz+kron(kron(tt_eye(2^(i-1)),tt_matrix(sigmaz)),tt_eye(2^(n-i)));
-     %Sz = Sz + kron3(eye(2^(i-1)),sigmaz,eye(2^(n-i)));
+    Sz = Sz + kron3(eye(2^(i-1)),sigmaz,eye(2^(n-i)));
 end
 Hz = -hz*Sz;
 
 %% full Hamiltonian
-
-H=Hxx+Hyy+Hzz+Hx+Hy+Hz;
-%H = Hxx + Hyy + Hzz + Hx + Hy + Hz;
+H = Hxx + Hyy + Hzz + Hx + Hy + Hz;
 
 end
 
