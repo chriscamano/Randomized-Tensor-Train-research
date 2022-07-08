@@ -20,17 +20,17 @@ sigmaz = [1 0; 0 -1];
 
 %% Hamiltonian: Hxx
 %Sxx = zeros(2^n);
-Sxx=tt_zeros(2^n,1)
+Sxx=tt_matrix(tt_zeros(2^n,3))
 
 for i = 1:n-1
     %add tensors to cell array as arg of mkron 
-    k=tt_matrix(kron(sigmax,sigmax))
-    ia=tt_eye(2^(i-1))
+    k=kron(sigmax,sigmax)
+    ia=tt_ones(2^(i-1))
     ib=tt_eye(2^(n-i-1))
+    a=full(ib)
     size(ib)
-    ic=kron(ia,k);
-    c=kron(ic,ib)
-    Sxx=Sxx+c
+     c=tt_mkron({tt_ones(2^(i-1)),tt_tensor(kron(sigmax,sigmax)),tt_ones(2^(n-i-1))})
+     Sxx=Sxx+c
     
    % Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1)));
     %%write this as a tt of rank 1 and sum over rank one tensor train oseldets and how to 

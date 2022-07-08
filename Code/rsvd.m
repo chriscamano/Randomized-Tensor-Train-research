@@ -26,10 +26,10 @@ P = min(2*K,N);
 X = randn(N,P); %consider oversampling 
 Y = A*X;
 
-% simple power iteration q times
-for k=1:q
-    Y = A*(A'*Y);
-end
+% % simple power iteration q times
+% for k=1:q
+%     Y = A*(A'*Y);
+% end
 
 % Compute SVD on projected Y=Q'*X;
 W1 = orth(Y);

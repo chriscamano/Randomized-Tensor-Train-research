@@ -125,7 +125,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     n = A.n;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Implement dynamic target rank sampling here. 
-    r=1;
+    r=5;
     
     
     %___________________________________________________________________
