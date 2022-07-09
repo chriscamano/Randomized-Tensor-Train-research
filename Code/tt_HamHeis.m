@@ -23,22 +23,17 @@ Sxx=ttm_zeros(2,n);
 for i = 1:n-1
     
     if( i==1)
+        %special handling for first core contraction
         Sxx=Sxx+tkron(tt_matrix(kron(sigmax,sigmax),eps,[2 2],[2 2]),tt_eye(2,(n-i-1)));
         
     elseif (i==n-1)
         Sxx=Sxx+tkron(tt_eye(2,(i-1)),tt_matrix(kron(sigmax,sigmax),eps,[2 2],[2 2]));
         
     else
+        %special handling for Last core contraction
         Sxx=Sxx+tkron(tkron(tt_eye(2,(i-1)),tt_matrix(kron(sigmax,sigmax),eps,[2 2],[2 2])),tt_eye(2,(n-i-1)));
     end
-        %Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1)));
-
-    %%write this as a tt of rank 1 and sum over rank one tensor train oseldets and how to 
-    %construct TT by iterative svd core construction 
-    %compare over original script for accuracy. Use the TT_tensor
-    %constructor. Use version of TT_tensor where you pass cell array of
-    %cores or copy source code of TT_tensor sontrsutor so that you do not
-    %have to form the full matrix or vector directly. 
+    %Sxx = Sxx + kron3(eye(2^(i-1)),kron(sigmax,sigmax),eye(2^(n-i-1))); 
 end
 Hxx = -Jx*Sxx;
 
@@ -46,16 +41,18 @@ Hxx = -Jx*Sxx;
 Syy = ttm_zeros(2,n)
 for i = 1:n-1
     if( i==1)
+        %special handling for first core contraction
         Syy=Syy+tkron(tt_matrix(kron(sigmay,sigmay),eps,[2 2],[2 2]),tt_eye(2,(n-i-1)));
         
     elseif (i==n-1)
         Syy=Syy+tkron(tt_eye(2,(i-1)),tt_matrix(kron(sigmay,sigmay),eps,[2 2],[2 2]));
         
     else
+        %special handling for Last core contraction
         Syy=Syy+tkron(tkron(tt_eye(2,(i-1)),tt_matrix(kron(sigmay,sigmay),eps,[2 2],[2 2])),tt_eye(2,(n-i-1)));
     end
     
-    %yy=Syy+kron(kron(tt_eye(2^(i-1)),tt_matrix(kron(sigmay,sigmay))),tt_eye(2^(n-i-1)));
+    
     % Syy = Syy + kron3(eye(2^(i-1)),kron(sigmay,sigmay),eye(2^(n-i-1)));
 end
 Hyy = -Jy*Syy;
@@ -64,15 +61,17 @@ Hyy = -Jy*Syy;
 Szz = ttm_zeros(2,n)
 for i = 1:n-1
     if( i==1)
+        %special handling for first core contraction
         Szz=Szz+tkron(tt_matrix(kron(sigmaz,sigmaz),eps,[2 2],[2 2]),tt_eye(2,(n-i-1)));
         
     elseif (i==n-1)
         Szz=Szz+tkron(tt_eye(2,(i-1)),tt_matrix(kron(sigmaz,sigmaz),eps,[2 2],[2 2]));
         
     else
+        %special handling for Last core contraction
         Szz=Szz+tkron(tkron(tt_eye(2,(i-1)),tt_matrix(kron(sigmaz,sigmaz),eps,[2 2],[2 2])),tt_eye(2,(n-i-1)));
     end
-    %Szz=Szz+kron(kron(tt_eye(2^(i-1)),tt_matrix(kron(sigmaz,sigmaz))),tt_eye(2^(n-i-1)));
+   
     %Szz = Szz + kron3(eye(2^(i-1)),kron(sigmaz,sigmaz),eye(2^(n-i-1)));
 end
 Hzz = -Jz*Szz;
@@ -81,15 +80,17 @@ Hzz = -Jz*Szz;
 Sx = ttm_zeros(2,n)
 for i = 1:n
     if( i==1)
+        %special handling for first core contraction
         Sx=Sx+tkron(tt_matrix(sigmax,eps,[2 2]),tt_eye(2,(n-i)));
         
     elseif (i==n)
         Sx=Sx+tkron(tt_eye(2,(i-1)),tt_matrix(sigmax));
         
     else
+        %special handling for Last core contraction
         Sx=Sx+tkron(tkron(tt_eye(2,(i-1)),tt_matrix(sigmax,eps,[2 2])),tt_eye(2,(n-i)));
     end
-    %Sx=Sx+kron(kron(tt_eye(2^(i-1)),tt_matrix(sigmax)),tt_eye(2^(n-i)));
+   
     %Sx = Sx + kron3(eye(2^(i-1)),sigmax,eye(2^(n-i)));
 end
 Hx = -hx*Sx;
@@ -97,15 +98,18 @@ Hx = -hx*Sx;
 %% Hamiltonian: Hy
 Sy = ttm_zeros(2,n)
 for i = 1:n
+    
     if( i==1)
+        %special handling for first core contraction
         Sy=Sy+tkron(tt_matrix(sigmay,eps,[2 2]),tt_eye(2,(n-i)));
     elseif (i==n)
         Sy=Sy+tkron(tt_eye(2,(i-1)),tt_matrix(sigmay));
         
     else
+        %special handling for Last core contraction
         Sy=Sy+tkron(tkron(tt_eye(2,(i-1)),tt_matrix(sigmay,eps,[2 2])),tt_eye(2,(n-i)));
     end
-    %Sy=Sy+kron(kron(tt_eye(2^(i-1)),tt_matrix(sigmay)),tt_eye(2^(n-i)));
+    
     %Sy = Sy + kron3(eye(2^(i-1)),sigmay,eye(2^(n-i)));
 end
 Hy = -hy*Sy;
@@ -114,13 +118,15 @@ Hy = -hy*Sy;
 Sz = ttm_zeros(2,n)
 for i = 1:n
     if( i==1)
+        %special handling for first core contraction
         Sz=Sz+tkron(tt_matrix(sigmaz,eps,[2 2]),tt_eye(2,(n-i)));
     elseif (i==n)
         Sz=Sz+tkron(tt_eye(2,(i-1)),tt_matrix(sigmaz));
     else
+        %special handling for Last core contraction
         Sz=Sz+tkron(tkron(tt_eye(2,(i-1)),tt_matrix(sigmaz,eps,[2 2])),tt_eye(2,(n-i)));
     end
-    %Sz=Sz+kron(kron(tt_eye(2^(i-1)),tt_matrix(sigmaz)),tt_eye(2^(n-i)));
+    
     %Sz = Sz + kron3(eye(2^(i-1)),sigmaz,eye(2^(n-i)));
 end
 Hz = -hz*Sz;
