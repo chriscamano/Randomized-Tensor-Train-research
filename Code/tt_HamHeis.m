@@ -137,11 +137,3 @@ H=Hxx+Hyy+Hzz+Hx+Hy+Hz;
 %H = Hxx + Hyy + Hzz + Hx + Hy + Hz;
 
 end
-
-
-function K = kron3(A,B,C)
-%KRON3  Kronecker tensor product.
-
-K = kron(A,kron(B,C));
-
-end

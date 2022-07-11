@@ -1,14 +1,16 @@
 
 %% input matrix construction
 n = 10;                                          % number of spins
-H = tt_HamHeis(n);                                  % Heisenberg Hamiltonian
+H = tt_HamHeis(n);
+
+%% Heisenberg Hamiltonian
 L=HamHeis(n);
 norm(full(H))-norm(L)
 %tt_H = tt_matrix(H,eps,2*ones(1,n),2*ones(1,n))  % convert to TT format
-theta=eigs(full(H),1,'smallestreal')
-class(H)
-%consider dynamic rank adjustment for svd versus rsvd during the actual
-%algorithm adjusment .
+theta=eigs(L,1,'smallestreal')
+
+% consider dynamic rank adjustment for svd versus rsvd during the actual
+% algorithm adjusment .
 
 %% Control dmrg test
 tic;
@@ -51,7 +53,7 @@ disp( "        rSVD based DMRG eigen test")
 disp('╚═════════════════════════╝')
 
 tic;
-[x_rsvd,theta_rsvd,out_rsvd]=dmrg_eig_rsvd(H,1e-10);
+[x_rsvd,theta_rsvd,out_rsvd]=dmrg_eig_rsvd(H,1e-10,'r',5);
 toc;
 
 %Ensure that compute dmrg results are consistent by checking norm for Ax=lambdaX

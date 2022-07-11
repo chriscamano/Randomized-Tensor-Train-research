@@ -76,6 +76,8 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Number of blocks to consider: 2 or 1
     numblocks = 1;
     
+    %target skteching rank 
+    r=5
     %___________________________________________________________________
     % Initial guess
     x=[];
@@ -123,11 +125,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     %___________________________________________________________________
     d = A.d;
     n = A.n;
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Implement dynamic target rank sampling here. 
-    r=5;
-    
-    
+   
     %___________________________________________________________________
     % Initialize from random initial state if not passed otherwise
     if (isempty(x))
