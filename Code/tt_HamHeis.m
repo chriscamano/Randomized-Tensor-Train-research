@@ -38,7 +38,7 @@ end
 Hxx = -Jx*Sxx;
 
 %% Hamiltonian: Hyy
-Syy = ttm_zeros(2,n)
+Syy = ttm_zeros(2,n);
 for i = 1:n-1
     if( i==1)
         %special handling for first core contraction
@@ -58,7 +58,7 @@ end
 Hyy = -Jy*Syy;
 
 %% Hamiltonian: Hzz
-Szz = ttm_zeros(2,n)
+Szz = ttm_zeros(2,n);
 for i = 1:n-1
     if( i==1)
         %special handling for first core contraction
@@ -77,7 +77,7 @@ end
 Hzz = -Jz*Szz;
 
 %% Hamiltonian: Hx
-Sx = ttm_zeros(2,n)
+Sx = ttm_zeros(2,n);
 for i = 1:n
     if( i==1)
         %special handling for first core contraction
@@ -96,7 +96,7 @@ end
 Hx = -hx*Sx;
 
 %% Hamiltonian: Hy
-Sy = ttm_zeros(2,n)
+Sy = ttm_zeros(2,n);
 for i = 1:n
     
     if( i==1)
@@ -115,7 +115,7 @@ end
 Hy = -hy*Sy;
 
 %% Hamiltonian: Hz
-Sz = ttm_zeros(2,n)
+Sz = ttm_zeros(2,n);
 for i = 1:n
     if( i==1)
         %special handling for first core contraction

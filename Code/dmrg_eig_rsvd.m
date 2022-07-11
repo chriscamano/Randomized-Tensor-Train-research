@@ -74,10 +74,10 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Random enrichment rank
     kickrank = 0;
     % Number of blocks to consider: 2 or 1
-    numblocks = 1;
+    numblocks = 2;
     
     %target skteching rank 
-    r=5
+    r=5;
     %___________________________________________________________________
     % Initial guess
     x=[];
@@ -246,65 +246,65 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             ra2 = ra(i+1);
             % sol_prev. It is also an initial guess.
             sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b);
-            %___________________________________________________________________
-%         else
-%             % Two-block DMRG, we have to merge some of two blocks into one.
-%             Phi2 = phixax(i+2);
-%             A2 = crA(i+1);
-%             if ((rx(i)*n(i))<=(n(i)*n(i+1)))&&((rx(i)*n(i))<=(n(i+1)*rx(i+2)))
-%                 % Merge Phi1 and A1
-%                 Phi1 = reshape(Phi1{1}, rx(i)*rx(i), ra(i));
-%                 A1 = reshape(A1{1}, ra(i), n(i)*n(i)*ra(i+1));
-%                 Phi1 = Phi1*A1;
-%                 Phi1 = reshape(Phi1, rx(i), rx(i), n(i), n(i)*ra(i+1));
-%                 Phi1 = permute(Phi1, [1,3,2,4]);
-%                 Phi1 = {reshape(Phi1, rx(i)*n(i), rx(i)*n(i), ra(i+1))};
-%                 A1 = A2;
-%                 rx1 = rx(i)*n(i);
-%                 nloc = n(i+1);
-%                 rx2 = rx(i+2);
-%                 ra1 = ra(i+1);
-%                 ra2 = ra(i+2);
-%             elseif ((n(i)*n(i+1)<=(rx(i)*n(i))))&&((n(i)*n(i+1))<=(n(i+1)*rx(i+2)))
-%                 % Merge A1 and A2
-%                 A1 = reshape(A1{1}, ra(i)*n(i)*n(i), ra(i+1));
-%                 A2 = reshape(A2{1}, ra(i+1), n(i+1)*n(i+1)*ra(i+2));
-%                 A1 = A1*A2;
-%                 A1 = reshape(A1, ra(i)*n(i), n(i), n(i+1), n(i+1)*ra(i+2));
-%                 A1 = permute(A1, [1,3,2,4]);
-%                 A1 = {reshape(A1, ra(i), n(i)*n(i+1), n(i)*n(i+1), ra(i+2))};
-%                 rx1 = rx(i);
-%                 nloc = n(i)*n(i+1);
-%                 rx2 = rx(i+2);
-%                 ra1 = ra(i);
-%                 ra2 = ra(i+2);
-%             else
-%                 % Merge A2 and Phi2
-%                 Phi2 = reshape(Phi2{1}, ra(i+2), rx(i+2)*rx(i+2));
-%                 A2 = reshape(A2{1}, ra(i+1)*n(i+1)*n(i+1), ra(i+2));
-%                 Phi2 = A2*Phi2;
-%                 Phi2 = reshape(Phi2, ra(i+1)*n(i+1), n(i+1), rx(i+2), rx(i+2));
-%                 Phi2 = permute(Phi2, [1,3,2,4]);
-%                 Phi2 = {reshape(Phi2, ra(i+1), n(i+1)*rx(i+2), n(i+1)*rx(i+2))};
-%                 rx1 = rx(i);
-%                 nloc = n(i);
-%                 rx2 = n(i+1)*rx(i+2);
-%                 ra1 = ra(i);
-%                 ra2 = ra(i+1);
-%             end
-%             % sol_prev. It is also an initial guess.
-%             if (dir>0)
-%                 sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b);
-%                 sol_prev = sol_prev.';
-%                 sol_prev = reshape(sol_prev, b*rx(i)*n(i), rx(i+1));
-%                 sol_prev = sol_prev*reshape(crx{i+1}, rx(i+1), n(i+1)*rx(i+2));
-%                 sol_prev = reshape(sol_prev, b, rx(i)*n(i)*n(i+1)*rx(i+2));
-%                 sol_prev = sol_prev.';
-%             else
-%                 sol_prev = reshape(crx{i+1}, rx(i+1), n(i+1)*rx(i+2)*b);
-%                 sol_prev = reshape(crx{i}, rx(i)*n(i), rx(i+1))*sol_prev;
-%                 sol_prev = reshape(sol_prev, rx(i)*n(i)*n(i+1)*rx(i+2), b);
-%             end
+           
+        else
+            % Two-block DMRG, we have to merge some of two blocks into one.
+            Phi2 = phixax(i+2);
+            A2 = crA(i+1);
+            if ((rx(i)*n(i))<=(n(i)*n(i+1)))&&((rx(i)*n(i))<=(n(i+1)*rx(i+2)))
+                % Merge Phi1 and A1
+                Phi1 = reshape(Phi1{1}, rx(i)*rx(i), ra(i));
+                A1 = reshape(A1{1}, ra(i), n(i)*n(i)*ra(i+1));
+                Phi1 = Phi1*A1;
+                Phi1 = reshape(Phi1, rx(i), rx(i), n(i), n(i)*ra(i+1));
+                Phi1 = permute(Phi1, [1,3,2,4]);
+                Phi1 = {reshape(Phi1, rx(i)*n(i), rx(i)*n(i), ra(i+1))};
+                A1 = A2;
+                rx1 = rx(i)*n(i);
+                nloc = n(i+1);
+                rx2 = rx(i+2);
+                ra1 = ra(i+1);
+                ra2 = ra(i+2);
+            elseif ((n(i)*n(i+1)<=(rx(i)*n(i))))&&((n(i)*n(i+1))<=(n(i+1)*rx(i+2)))
+                % Merge A1 and A2
+                A1 = reshape(A1{1}, ra(i)*n(i)*n(i), ra(i+1));
+                A2 = reshape(A2{1}, ra(i+1), n(i+1)*n(i+1)*ra(i+2));
+                A1 = A1*A2;
+                A1 = reshape(A1, ra(i)*n(i), n(i), n(i+1), n(i+1)*ra(i+2));
+                A1 = permute(A1, [1,3,2,4]);
+                A1 = {reshape(A1, ra(i), n(i)*n(i+1), n(i)*n(i+1), ra(i+2))};
+                rx1 = rx(i);
+                nloc = n(i)*n(i+1);
+                rx2 = rx(i+2);
+                ra1 = ra(i);
+                ra2 = ra(i+2);
+            else
+                % Merge A2 and Phi2
+                Phi2 = reshape(Phi2{1}, ra(i+2), rx(i+2)*rx(i+2));
+                A2 = reshape(A2{1}, ra(i+1)*n(i+1)*n(i+1), ra(i+2));
+                Phi2 = A2*Phi2;
+                Phi2 = reshape(Phi2, ra(i+1)*n(i+1), n(i+1), rx(i+2), rx(i+2));
+                Phi2 = permute(Phi2, [1,3,2,4]);
+                Phi2 = {reshape(Phi2, ra(i+1), n(i+1)*rx(i+2), n(i+1)*rx(i+2))};
+                rx1 = rx(i);
+                nloc = n(i);
+                rx2 = n(i+1)*rx(i+2);
+                ra1 = ra(i);
+                ra2 = ra(i+1);
+            end
+            % sol_prev. It is also an initial guess.
+            if (dir>0)
+                sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b);
+                sol_prev = sol_prev.';
+                sol_prev = reshape(sol_prev, b*rx(i)*n(i), rx(i+1));
+                sol_prev = sol_prev*reshape(crx{i+1}, rx(i+1), n(i+1)*rx(i+2));
+                sol_prev = reshape(sol_prev, b, rx(i)*n(i)*n(i+1)*rx(i+2));
+                sol_prev = sol_prev.';
+            else
+                sol_prev = reshape(crx{i+1}, rx(i+1), n(i+1)*rx(i+2)*b);
+                sol_prev = reshape(crx{i}, rx(i)*n(i), rx(i+1))*sol_prev;
+                sol_prev = reshape(sol_prev, rx(i)*n(i)*n(i+1)*rx(i+2), b);
+            end
         end
         
         %___________________________________________________________________
@@ -373,7 +373,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
                     sol = reshape(sol, b*rx(i), n(i)*rx(i+1));
                 end
             end
-            
+            %[ux,s,vx]=rsvd(sol,r,1);
             [ux,s,vx]=svd(sol, 'econ');
             s = diag(s);
             
