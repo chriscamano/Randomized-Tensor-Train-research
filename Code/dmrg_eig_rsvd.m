@@ -110,7 +110,9 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             case 'b'
                 b = varargin{i+1};
             case 'numblocks'
-                numblocks = varargin{i+1};            
+                numblocks = varargin{i+1};    
+            case 'r'
+                r== varargin{i+1};    
             otherwise
                 error('Unknown tuning parameter "%s"', varargin{i});
         end
