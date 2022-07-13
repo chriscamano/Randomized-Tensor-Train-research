@@ -11,48 +11,48 @@ H = tt_HamHeis(n);
 
 % consider dynamic rank adjustment for svd versus rsvd during the actual
 % algorithm adjusment .
-
-%% Control dmrg test
-tic;
-[x,theta,out]=dmrg_eig(H,1e-10,'numblocks',1);
-toc;
-fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-disp   ('        norm test')
-fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
-
-res=norm(H*x-theta*x)
-%% QR based DMRG test
-disp('╔═════════════════════════╗')
-disp( "        QR based DMRG eigen test")
-disp('╚═════════════════════════╝')
-
-tic;
-[x_qr,theta_qr,out_qr]=dmrg_eig_qr(H,1e-10,'numblocks',1);
-toc;
-
-%Ensure that compute dmrg results are consistent by checking norm for Ax=lambdaX
-fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-disp   ('        norm test')
-fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
-res_qr=norm(H*x_qr-theta_qr*x_qr)
-
-%% SVD based DMRG test
-disp('╔═════════════════════════╗')
-disp( "        SVD based DMRG eigen test")
-disp('╚═════════════════════════╝')
-
-tic;
-[x_svd,theta_svd,out_svd]=dmrg_eig_svd(H,1e-10);
-toc;
-
-%Ensure that compute dmrg results are consistent by checking norm for Ax=lambdaX
-fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-disp   ('        norm test')
-fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
-res_svd=norm(H*x_svd-theta_svd*x_svd)
-
-% x= tt_rand(H.n, H.d, 5 , -1);
-% H=tt_matrix(H*x,[2,2])
+% 
+% %% Control dmrg test
+% tic;
+% [x,theta,out]=dmrg_eig(H,1e-10,'numblocks',1);
+% toc;
+% fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+% disp   ('        norm test')
+% fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+% 
+% res=norm(H*x-theta*x)
+% %% QR based DMRG test
+% disp('╔═════════════════════════╗')
+% disp( "        QR based DMRG eigen test")
+% disp('╚═════════════════════════╝')
+% 
+% tic;
+% [x_qr,theta_qr,out_qr]=dmrg_eig_qr(H,1e-10,'numblocks',1);
+% toc;
+% 
+% %Ensure that compute dmrg results are consistent by checking norm for Ax=lambdaX
+% fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+% disp   ('        norm test')
+% fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+% res_qr=norm(H*x_qr-theta_qr*x_qr)
+% 
+% %% SVD based DMRG test
+% disp('╔═════════════════════════╗')
+% disp( "        SVD based DMRG eigen test")
+% disp('╚═════════════════════════╝')
+% 
+% tic;
+% [x_svd,theta_svd,out_svd]=dmrg_eig_svd(H,1e-10,'numblocks',1);
+% toc;
+% 
+% %Ensure that compute dmrg results are consistent by checking norm for Ax=lambdaX
+% fprintf(' \n━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+% disp   ('        norm test')
+% fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n')
+% res_svd=norm(H*x_svd-theta_svd*x_svd)
+% 
+% % x= tt_rand(H.n, H.d, 5 , -1);
+% % H=tt_matrix(H*x,[2,2])
 
 %% Randomized SVD Test
 disp('╔═════════════════════════╗')

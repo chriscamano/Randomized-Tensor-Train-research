@@ -47,7 +47,10 @@
 % [*] Dolgov, Khoromskij, Oseledets, Savostyanov,
 % "Computation of extreme eigenvalues in higher dimensions using block
 % tensor train format", Comp. Phys. Comm. 2014, http://dx.doi.org/10.1016/j.cpc.2013.12.017
-%
+
+
+
+
 
 function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Number of eigenstates
