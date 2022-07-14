@@ -53,15 +53,8 @@ end
 
 %Line 12
 %solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
-
 %Line 13
-%Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
-
 %Line 14
-%Identify set I of indicies i where res is at most tol 
-
 %Line 15
-%Compute x_i = By_i and normalize x_i = x_i/||x_i||_2 for i \ in I and
-%output x(x_i, \lambda _ui) 
 end
 
