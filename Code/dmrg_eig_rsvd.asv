@@ -47,7 +47,10 @@
 % [*] Dolgov, Khoromskij, Oseledets, Savostyanov,
 % "Computation of extreme eigenvalues in higher dimensions using block
 % tensor train format", Comp. Phys. Comm. 2014, http://dx.doi.org/10.1016/j.cpc.2013.12.017
-%
+
+
+
+
 
 function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Number of eigenstates
@@ -82,7 +85,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Initial guess
     x=[];
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     for i=1:2:length(varargin)-1
         switch lower(varargin{i})
             case 'nswp'
@@ -118,7 +121,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
         end
     end
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     % Extract the dimensions
     if (~isa(A, 'tt_matrix'))
         error('A must be given in a tt_matrix class');
@@ -128,7 +131,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     d = A.d;
     n = A.n;
    
-    %___________________________________________________________________
+%% ___________________________________________________________________
     % Initialize from random initial state if not passed otherwise
     if (isempty(x))
         x = tt_rand(n, d, 5 , -1);
@@ -175,7 +178,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     % Interfaces
     phixax = cell(d+1,1); phixax{1}=1; phixax{d+1}=1;
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     % This is some convergence output for test purposes
     testdata = cell(3,1);
     testdata{1} = zeros(d-numblocks+1, nswp); % times
@@ -183,7 +186,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     testdata{3} = zeros(d-numblocks+1, nswp); % local res or dx
     t_dmrg_eig = tic;
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     % Presetup: compute the initial projections
     for i=d:-1:2
         % QR (Gauge conditions) right-to-left
@@ -203,7 +206,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
         end
     end
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     % Initial guess for EVs
     theta = rightreduce_matrix(phixax(2), crx{1}, crA(1), crx{1}, rx(1),n(1),rx(1+1), 1,ra(1),ra(1+1), rx(1),n(1),rx(1+1));
     theta = squeeze(theta{1});
@@ -219,7 +222,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
         crx{1} = randn(rx(1), n(1), rx(2), b);
     end
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     % DMRG sweeps
     swp = 1;
     i = 1; % Start from the first block
@@ -229,7 +232,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
     max_res = 0;
     max_matvecs = 0;
     
-    %___________________________________________________________________
+%% ___________________________________________________________________
     while (swp<=nswp)||(dir>0)
         % Extract the matrix parts, accelerate a plenty of iterations with them
         % Phi1: 1, rx'1, rx1, ra1
@@ -245,8 +248,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             ra1 = ra(i);
             ra2 = ra(i+1);
             % sol_prev. It is also an initial guess.
-            sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b);
-           
+            sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b); 
         else
             % Two-block DMRG, we have to merge some of two blocks into one.
             Phi2 = phixax(i+2);
@@ -307,11 +309,11 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             end
         end
         
-        %___________________________________________________________________
+%% ___________________________________________________________________
         % Initial residual
         res_prev = norm(local_matvec(sol_prev, rx1,nloc,rx2,b, rx1,nloc,rx2, Phi1, A1, Phi2, 1,ra1,ra2)-sol_prev*diag(theta));
         
-        %___________________________________________________________________
+%% ___________________________________________________________________
         if (rx1*nloc*rx2<max_full_size) % Full solution
             %      |     |    |
             % B = Phi1 - A1 - Phi2
@@ -325,8 +327,11 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             theta = L(ind(1:b));
             sol = sol(:,ind(1:b));
             num_matvecs = 1;
-        %___________________________________________________________________    
+%% ___________________________________________________________________    
         else % Iterative solution
+            
+            
+            %sketching target here prior to lobpcg call. 
             if (usemex)
                 Phi1m = reshape(Phi1{1}, rx1, rx1, ra1);
                 Phi2m = reshape(Phi2{1}, ra2*rx2, rx2);
@@ -343,19 +348,19 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
         %___________________________________________________________________
         % count the number of MatVecs
         max_matvecs = max(max_matvecs, num_matvecs);
-        %___________________________________________________________________
+%% ___________________________________________________________________
         if (~strcmp(trunc_norm, 'fro'))
             % We need the new residual for the corresp. trunc. strategy
             res_new = norm(local_matvec(sol, rx1,nloc,rx2,b, rx1,nloc,rx2, Phi1, A1, Phi2, 1,ra1,ra2)-sol*diag(theta));
         end
         
-        %___________________________________________________________________
+%% ___________________________________________________________________
         % L2-norm convergence check. 
         dx = norm(sol*(sol'*sol_prev)-sol_prev);
         max_dx = max(max_dx, dx);
         max_res = max(max_res, res_prev);
         
-        %___________________________________________________________________
+%% ___________________________________________________________________
         if ((dir>0)&&(i<d))||((dir<0)&&(i>1))||(numblocks==2) % SVD and enrichment
             if (dir>0)
                 if (numblocks==2)
@@ -433,7 +438,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             end
         end
         
-        %%___________________________________________________________________
+%% ___________________________________________________________________
         if (dir>0)&&(i<d) % Forward sweep
             ux = ux(:,1:r);
             vx = conj(vx(:,1:r))*diag(s(1:r));
@@ -527,7 +532,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             crx{i} = sol;
         end
         
-        %___________________________________________________________________
+%% ___________________________________________________________________
         if (verb>2)
             % Report the debug data if necessary
             if (dir>0)
@@ -581,11 +586,8 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             max_matvecs = 0;
         end
     end
-    
-    %___________________________________________________________________
     crx{d} = reshape(crx{d}, rx(d), n(d), b);
     x = cell2core(tt_tensor, crx);
-    %___________________________________________________________________
 end
     
     % Accumulates the left reduction W{1:k}'*A{1:k}*X{1:k}

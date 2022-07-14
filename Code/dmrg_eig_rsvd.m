@@ -115,7 +115,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             case 'numblocks'
                 numblocks = varargin{i+1};    
             case 'r'
-                r== varargin{i+1};    
+                r= varargin{i+1};    
             otherwise
                 error('Unknown tuning parameter "%s"', varargin{i});
         end
@@ -134,7 +134,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
 %% ___________________________________________________________________
     % Initialize from random initial state if not passed otherwise
     if (isempty(x))
-        x = tt_rand(n, d, 5 , -1);
+        x = tt_rand(n, d, 20 , -1);
     else
         if (~isa(x, 'tt_tensor'))
             error('x0 must be given in a tt_tensor class');
@@ -248,8 +248,7 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             ra1 = ra(i);
             ra2 = ra(i+1);
             % sol_prev. It is also an initial guess.
-            sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b);
-           
+            sol_prev = reshape(crx{i}, rx(i)*n(i)*rx(i+1), b); 
         else
             % Two-block DMRG, we have to merge some of two blocks into one.
             Phi2 = phixax(i+2);
@@ -330,6 +329,9 @@ function [x,theta,testdata]=dmrg_eig_rsvd(A, tol, varargin)
             num_matvecs = 1;
 %% ___________________________________________________________________    
         else % Iterative solution
+            
+            
+            %sketching target here prior to lobpcg call. 
             if (usemex)
                 Phi1m = reshape(Phi1{1}, rx1, rx1, ra1);
                 Phi2m = reshape(Phi2{1}, ra2*rx2, rx2);
