@@ -60,7 +60,7 @@ disp( "        rSVD based DMRG eigen test")
 disp('╚═════════════════════════╝')
 
 tic;
-[x_rsvd,theta_rsvd,out_rsvd]=dmrg_eig_rsvd(H,1e-10,'r',1,'numblocks',1);
+[x_rsvd,theta_rsvd,out_rsvd]=dmrg_eig_rsvd(H,1e-10,'r',25,'numblocks',1);
 toc;
 
 
