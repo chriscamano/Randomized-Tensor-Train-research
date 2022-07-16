@@ -83,9 +83,8 @@ if(cond(T)>eps^-1 )
 end
 
 %% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
-
 temp=speye(size(T));           
-tinv = temp(:,:)/T;                            %compute t inverse via triangular substitution
+tinv = temp(:,:)/T;                         %compute t inverse via triangular substitution
 
 Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 % for i=1 : 1000                            %invoke QR algorithm 
@@ -95,25 +94,25 @@ Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 % end
 
 
-[y,lambda]=eig(Mhat);
+[y,lambda]=eig(Mhat);                       %invoke QR algorithm;  
 % for i=1:d
-%     [V,D]=eig(Mhat);            %invoke QR algorithm;  
+%     [V,D]=eig(Mhat);            
 %     lambda(:,i)=diag(D);
 %     y(:,i)=V;
 % end
 lambda=diag(lambda);
-% %% Line 13                                  Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
+%% Line 13                               Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
 % 
 % res=zeros(5);
 % for i=1:d
 %    res(:,i)=norm(D*y(:,i)-theta(i)*C*y(:,i))/norm(C*y(:,i))
 % end
-% %% Line 14
-% %Identify set I of indicies i where res is at most tol 
 
-%% Line 15
-%Compute x_i = By_i and normalize x_i = x_i/||x_i||_2 for i \ in I and
-%output x(x_i, \lambda _ui) 
+%% Line 14
+                                          %Identify set I of indicies i where res is at most tol 
+
+%% Line 15                                %Compute x_i = By_i
+                                          %normalize x_i = x_i/||x_i||_2 for i \ in I andoutput x(x_i, \lambda _ui) 
 x=B*y;
 end
 
