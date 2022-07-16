@@ -32,7 +32,7 @@ s=4*d;                                      %target embedding dimension
 w=zeros(n,d);                               %init w vectors
 B=zeros(n,d);                               %init Basis
 AB=zeros(n,d);                              %init matrix AB
-
+S=zeros(s,n);
 %% Line 2                                   Draw subspace embedding S with s= 4d                                      
 D=zeros(s,n);                               %create diagonal projector matrix onto s coordinates 
 for i=1:n
@@ -52,15 +52,16 @@ AB(:,1)=A*B(:,1);                           %init first vector of AB based on gu
 %% Line 6                                   %k Truncated Arnoldi with k=4;
 k=4;
 ctrans=zeros(n);                            %preallocate for optimization
-
+a=zeros(n,1);                               %preallocate a 
+In=eye(n);
 for j=2:d
-    t=eye(n);                               %temp starting matrix 
+    t=In;                               %temp starting matrix 
     for i=1:k                   
      if(j-i<=0)                             %per the paper when i>=0 break 
          break;
      end
-     ctrans=B(:,j-i)*ctranspose(B(:,j-i));
-     t=t-ctrans;     %Subtract the computed value from I 
+     a=B(:,j-i);
+     t=t-a*a';     %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB
    
