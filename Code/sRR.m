@@ -19,10 +19,10 @@ tic;
 [x,lambda]=mssR(A,d,n);
 toc
 %mssR(A,b,d,k,u,tau)
-% tic;
-% [V,D]=eigs(A);
-% toc
-%norm(A*x(:,1))-norm(lambda(1)*x(:,1))
+tic;
+[V,D]=eigs(A);
+toc
+norm(A*x(:,1))-norm(lambda(1)*x(:,1))
 
 
 function [x,lambda]= mssR(A,d,n)
@@ -38,9 +38,10 @@ for i=1:n
 end                                         
 F=dftmtx(n);                                %create unitary discrete fourier transform 
                                             %create diagonal steinhaus matrix 
-stein=diag(exp(1i*2*pi*rand(n,n)));
-E=zeros(n,n);
-E(1:(n+1):end)=stein;
+%stein=diag(exp(1i*2*pi*rand(n,n)));
+stein=exp(1i*2*pi*rand(n,1));
+%E=zeros(n,n);
+E=diag(stein);
 
 S=sqrt(d/s)*D*F*E;                          %form subsampled random fourier transform
 %% Line 3
@@ -57,6 +58,8 @@ for j=2:d
      if(j-i<=0)                             %per the paper when i>=0 break 
          break;
      end
+
+
      t=t-B(:,j-i)*ctranspose(B(:,j-i));     %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB

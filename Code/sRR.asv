@@ -13,15 +13,16 @@
 % Estimated residual norms \hat{r}_{est,i}
 
 d=5;
-n=500;
+n=5000;
 A=rand(n,n);
-
-[x,lambda]=mssR(A,d,n)
+tic;
+[x,lambda]=mssR(A,d,n);
+toc
 %mssR(A,b,d,k,u,tau)
-[V,D]=eigs(A);
-V(1:5)
-
-D(1:5)
+% tic;
+% [V,D]=eigs(A);
+% toc
+%norm(A*x(:,1))-norm(lambda(1)*x(:,1))
 
 
 function [x,lambda]= mssR(A,d,n)
@@ -56,6 +57,11 @@ for j=2:d
      if(j-i<=0)                             %per the paper when i>=0 break 
          break;
      end
+     W=randn(n,n/2);
+     Y=B*W
+     
+     
+     
      t=t-B(:,j-i)*ctranspose(B(:,j-i));     %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB
@@ -80,8 +86,8 @@ end
 
 %% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
 
-B=speye(size(T));           
-tinv = B(:,:)/T;                            %compute t inverse via triangular substitution
+temp=speye(size(T));           
+tinv = temp(:,:)/T;                            %compute t inverse via triangular substitution
 
 Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 % for i=1 : 1000                            %invoke QR algorithm 
@@ -89,20 +95,14 @@ Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 %     Mhat=R*Q;
 %     evec=evec*Q;
 % end
-y=zeros(d);
-lambda=zeros(d);
 
-[V,D]=eig(Mhat);
+
+[y,lambda]=eig(Mhat);
 % for i=1:d
 %     [V,D]=eig(Mhat);            %invoke QR algorithm;  
 %     lambda(:,i)=diag(D);
 %     y(:,i)=V;
 % end
-
-                       %invoke QR algorithm;
-l
-
-
 lambda=diag(lambda);
 % %% Line 13                                  Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
 % 
