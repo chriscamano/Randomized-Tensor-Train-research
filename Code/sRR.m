@@ -13,7 +13,7 @@
 % Estimated residual norms \hat{r}_{est,i}
 
 d=5;
-n=500;
+n=5000;
 A=rand(n,n);
 tic;
 [x,lambda]=mssR(A,d,n);
@@ -24,13 +24,14 @@ toc
 % % toc
 % %seems like it only really gets the first eigenvalue/round state
 norm(A*x(:,1))-norm(lambda(1)*x(:,1))
-norm(A*x(:,2))-norm(lambda(2)*x(:,2))
-norm(A*x(:,3))-norm(lambda(2)*x(:,3))
+% norm(A*x(:,2))-norm(lambda(2)*x(:,2))
+% norm(A*x(:,3))-norm(lambda(2)*x(:,3))
 function [x,lambda]= mssR(A,d,n)
 s=4*d;                                      %target embedding dimension
 w=zeros(n,d);                               %init w vectors
 B=zeros(n,d);                               %init Basis
-AB=zeros(n,d);                               %init matrix AB
+AB=zeros(n,d);                              %init matrix AB
+
 %% Line 2                                   Draw subspace embedding S with s= 4d 
                                             
 D=zeros(s,n);                               %create diagonal projector matrix onto s coordinates 
@@ -60,8 +61,6 @@ for j=2:d
      if(j-i<=0)                             %per the paper when i>=0 break 
          break;
      end
-
-     
      ctrans=B(:,j-i)*ctranspose(B(:,j-i));
      t=t-ctrans;     %Subtract the computed value from I 
     end
@@ -95,7 +94,6 @@ Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 %     Mhat=R*Q;
 %     evec=evec*Q;
 % end
-
 
 [y,lambda]=eig(Mhat);                       %invoke QR algorithm;  
 lambda=diag(lambda);
