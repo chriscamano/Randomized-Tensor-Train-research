@@ -67,20 +67,27 @@ C=S*B;                                      %Sketch basis C=S[b_1,...,b_dmax]
 D=S*AB;                                     %sketch D=S[m_1,...m_dmax]
 
 %% Line 9
-[U,T]=qr(C,0);                       %Compute thin QR of C  
-%[U,T,p]=qr(C,0);                       %Compute thin QR of C with pivoting 
+[U,T]=qr(C,0);                              %Compute thin QR of C  
+%[U,T,p]=qr(C,0);                           %Compute thin QR of C with pivoting 
 
-
-if(k_2(T)>tol )
-    %Line 11
-    %Either Whiten B<-BT^-1 or stabilkize and solve 
+%% Line 11
+if(cond(T)>eps^-1 )
+    B=B*T^-1;                               %whiten B  
 end
 
+%% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
 
+B=speye(size(T));           
+tinv = B(:,:)/T;                            %compute t inverse via triangular substitution
 
-%% Line 12
-%solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
+Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 
+for i=1 : 20                                %invoke QR algorithm 
+    [Q,R]=qr(Mhat);
+    Mhat=R*Q;
+end
+theta=diag(Mhat);
+eigs(Mhat)
 %% Line 13
 %Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
 
