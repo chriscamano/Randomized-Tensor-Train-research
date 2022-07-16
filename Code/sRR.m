@@ -13,15 +13,19 @@
 % Estimated residual norms \hat{r}_{est,i}
 
 d=5;
-n=500;
+n=5000;
 A=rand(n,n);
-
-mssR(A,d,n)
+tic;
+[x,lambda]=mssR(A,d,n);
+toc
 %mssR(A,b,d,k,u,tau)
+% tic;
+% [V,D]=eigs(A);
+% toc
+%norm(A*x(:,1))-norm(lambda(1)*x(:,1))
 
 
-
-function [norms, x,lambda]= mssR(A,d,n)
+function [x,lambda]= mssR(A,d,n)
 s=4*d;                                      %target embedding dimension
 w=zeros(n,d);                               %init w vectors
 B=zeros(n,d);                               %init Basis
@@ -77,25 +81,36 @@ end
 
 %% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
 
-B=speye(size(T));           
-tinv = B(:,:)/T;                            %compute t inverse via triangular substitution
+temp=speye(size(T));           
+tinv = temp(:,:)/T;                            %compute t inverse via triangular substitution
 
 Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
+% for i=1 : 1000                            %invoke QR algorithm 
+%     [Q,R]=qr(Mhat);
+%     Mhat=R*Q;
+%     evec=evec*Q;
+% end
 
-for i=1 : 20                                %invoke QR algorithm 
-    [Q,R]=qr(Mhat);
-    Mhat=R*Q;
-end
-theta=diag(Mhat);
-eigs(Mhat)
-%% Line 13
-%Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
 
-%% Line 14
-%Identify set I of indicies i where res is at most tol 
+[y,lambda]=eig(Mhat);
+% for i=1:d
+%     [V,D]=eig(Mhat);            %invoke QR algorithm;  
+%     lambda(:,i)=diag(D);
+%     y(:,i)=V;
+% end
+lambda=diag(lambda);
+% %% Line 13                                  Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
+% 
+% res=zeros(5);
+% for i=1:d
+%    res(:,i)=norm(D*y(:,i)-theta(i)*C*y(:,i))/norm(C*y(:,i))
+% end
+% %% Line 14
+% %Identify set I of indicies i where res is at most tol 
 
 %% Line 15
 %Compute x_i = By_i and normalize x_i = x_i/||x_i||_2 for i \ in I and
 %output x(x_i, \lambda _ui) 
+x=B*y;
 end
 

@@ -16,12 +16,15 @@ d=5;
 n=500;
 A=rand(n,n);
 
-mssR(A,d,n)
+[x,lambda]=mssR(A,d,n)
 %mssR(A,b,d,k,u,tau)
+[V,D]=eigs(A);
+V(1:5)
+
+D(1:5)
 
 
-
-function [norms, x,lambda]= mssR(A,d,n)
+function [x,lambda]= mssR(A,d,n)
 s=4*d;                                      %target embedding dimension
 w=zeros(n,d);                               %init w vectors
 B=zeros(n,d);                               %init Basis
@@ -81,21 +84,38 @@ B=speye(size(T));
 tinv = B(:,:)/T;                            %compute t inverse via triangular substitution
 
 Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
+% for i=1 : 1000                            %invoke QR algorithm 
+%     [Q,R]=qr(Mhat);
+%     Mhat=R*Q;
+%     evec=evec*Q;
+% end
+y=zeros(d);
+lambda=zeros(d);
 
-for i=1 : 20                                %invoke QR algorithm 
-    [Q,R]=qr(Mhat);
-    Mhat=R*Q;
-end
+[V,D]=eig(Mhat);
+% for i=1:d
+%     [V,D]=eig(Mhat);            %invoke QR algorithm;  
+%     lambda(:,i)=diag(D);
+%     y(:,i)=V;
+% end
+
+                       %invoke QR algorithm;
+l
 
 
-%% Line 13
-%Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
-
-%% Line 14
-%Identify set I of indicies i where res is at most tol 
+lambda=diag(lambda);
+% %% Line 13                                  Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
+% 
+% res=zeros(5);
+% for i=1:d
+%    res(:,i)=norm(D*y(:,i)-theta(i)*C*y(:,i))/norm(C*y(:,i))
+% end
+% %% Line 14
+% %Identify set I of indicies i where res is at most tol 
 
 %% Line 15
 %Compute x_i = By_i and normalize x_i = x_i/||x_i||_2 for i \ in I and
 %output x(x_i, \lambda _ui) 
+x=B*y;
 end
 
