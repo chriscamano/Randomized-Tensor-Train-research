@@ -13,18 +13,19 @@
 % Estimated residual norms \hat{r}_{est,i}
 
 d=5;
-n=5000;
+n=500;
 A=rand(n,n);
 tic;
 [x,lambda]=mssR(A,d,n);
 toc
 %mssR(A,b,d,k,u,tau)
-tic;
-[V,D]=eigs(A);
-toc
+% % tic;
+% % [V,D]=eigs(A,d);
+% % toc
+% %seems like it only really gets the first eigenvalue/round state
 norm(A*x(:,1))-norm(lambda(1)*x(:,1))
-
-
+norm(A*x(:,2))-norm(lambda(2)*x(:,2))
+norm(A*x(:,3))-norm(lambda(2)*x(:,3))
 function [x,lambda]= mssR(A,d,n)
 s=4*d;                                      %target embedding dimension
 w=zeros(n,d);                               %init w vectors
@@ -52,6 +53,7 @@ AB(:,1)=A*B(:,1);                           %init first vector of AB based on gu
 
 %% Line 6                                   %k Truncated Arnoldi with k=4;
 k=4;
+ctrans=zeros(n);                            %preallocate for optimization
 for j=2:d
     t=eye(n);                               %temp starting matrix 
     for i=1:k                   
@@ -59,8 +61,9 @@ for j=2:d
          break;
      end
 
-
-     t=t-B(:,j-i)*ctranspose(B(:,j-i));     %Subtract the computed value from I 
+     
+     ctrans=B(:,j-i)*ctranspose(B(:,j-i));
+     t=t-ctrans;     %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB
    
@@ -95,17 +98,11 @@ Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 
 
 [y,lambda]=eig(Mhat);                       %invoke QR algorithm;  
-% for i=1:d
-%     [V,D]=eig(Mhat);            
-%     lambda(:,i)=diag(D);
-%     y(:,i)=V;
-% end
 lambda=diag(lambda);
 %% Line 13                               Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
-% 
 % res=zeros(5);
 % for i=1:d
-%    res(:,i)=norm(D*y(:,i)-theta(i)*C*y(:,i))/norm(C*y(:,i))
+%    res(:,i)=norm(D*y(:,i)-lambda(i)*C*y(:,i))/norm(C*y(:,i))
 % end
 
 %% Line 14
