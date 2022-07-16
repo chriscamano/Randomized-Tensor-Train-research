@@ -27,27 +27,24 @@ norm(A*x(:,1))-norm(lambda(1)*x(:,1))
 % norm(A*x(:,2))-norm(lambda(2)*x(:,2))
 % norm(A*x(:,3))-norm(lambda(2)*x(:,3))
 function [x,lambda]= mssR(A,d,n)
+
 s=4*d;                                      %target embedding dimension
 w=zeros(n,d);                               %init w vectors
 B=zeros(n,d);                               %init Basis
 AB=zeros(n,d);                              %init matrix AB
 
-%% Line 2                                   Draw subspace embedding S with s= 4d 
-                                            
+%% Line 2                                   Draw subspace embedding S with s= 4d                                      
 D=zeros(s,n);                               %create diagonal projector matrix onto s coordinates 
 for i=1:n
    D(randi([1,s]),i)=1; 
 end                                         
-F=dftmtx(n);                                %create unitary discrete fourier transform 
-                                            %create diagonal steinhaus matrix 
-%stein=diag(exp(1i*2*pi*rand(n,n)));
-stein=exp(1i*2*pi*rand(n,1));
-%E=zeros(n,n);
-E=diag(stein);
-
+F=dftmtx(n);                                %create unitary discrete fourier transform                                             
+E=diag(exp(1i*2*pi*rand(n,1)));             %create diagonal steinhaus matrix 
 S=sqrt(d/s)*D*F*E;                          %form subsampled random fourier transform
+
 %% Line 3
 w(:,1)=randn(n,1);                          %init starting vector
+
 %% Line 4
 B(:,1)=(w(:,1)/norm(w(:,1)));               %Normalize and init basis vector
 AB(:,1)=A*B(:,1);                           %init first vector of AB based on guess 
@@ -55,6 +52,7 @@ AB(:,1)=A*B(:,1);                           %init first vector of AB based on gu
 %% Line 6                                   %k Truncated Arnoldi with k=4;
 k=4;
 ctrans=zeros(n);                            %preallocate for optimization
+
 for j=2:d
     t=eye(n);                               %temp starting matrix 
     for i=1:k                   
@@ -97,6 +95,7 @@ Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
 
 [y,lambda]=eig(Mhat);                       %invoke QR algorithm;  
 lambda=diag(lambda);
+
 %% Line 13                               Form residual estimates ||Dy_i-\lambda_iCy_i||_2/||Cy_i||_2
 % res=zeros(5);
 % for i=1:d
@@ -107,7 +106,10 @@ lambda=diag(lambda);
                                           %Identify set I of indicies i where res is at most tol 
 
 %% Line 15                                %Compute x_i = By_i
-                                          %normalize x_i = x_i/||x_i||_2 for i \ in I andoutput x(x_i, \lambda _ui) 
+                                          %normalize x_i = x_i/||x_i||_2
+                                          %for i \ in I andoutput x(x_i,
+                                          %\lambda _ui) for those with res
+                                          %issues
 x=B*y;
 end
 
