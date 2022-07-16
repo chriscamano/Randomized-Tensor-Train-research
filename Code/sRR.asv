@@ -66,8 +66,7 @@ for j=2:d
      t=t-a*a';     %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB
-
-   %% Line 7
+%% Line 7
    B(:,j)=(w(:,j)/norm(w(:,j)));            %Normalize 
    AB(:,j)=A*B(:,j);                        % update AB
 end
@@ -90,6 +89,12 @@ temp=speye(size(T));
 tinv = temp(:,:)/T;                         %compute t inverse via triangular substitution
 
 Mhat=tinv*(ctranspose(U)*D);                %Form minimizer M hat
+% for i=1 : 1000                            %invoke QR algorithm 
+%     [Q,R]=qr(Mhat);
+%     Mhat=R*Q;
+%     evec=evec*Q;
+% end
+
 [y,lambda]=eig(Mhat);                       %invoke QR algorithm;  
 lambda=diag(lambda);
 
