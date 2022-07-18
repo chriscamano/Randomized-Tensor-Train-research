@@ -18,14 +18,15 @@ A=rand(n,n);
 tic;
 [x,lambda]=mssR(A,d,n);
 toc
+% for i =1:d
+%     norm(A*x(:,i))-norm(lambda(i)*x(:,i))
+% end
 %mssR(A,b,d,k,u,tau)
-% % tic;
-% % [V,D]=eigs(A,d);
-% % toc
+% tic;
+% [V,D]=eigs(A,d);
+% toc
 % %seems like it only really gets the first eigenvalue/round state
-norm(A*x(:,1))-norm(lambda(1)*x(:,1))
-% norm(A*x(:,2))-norm(lambda(2)*x(:,2))
-% norm(A*x(:,3))-norm(lambda(2)*x(:,3))
+
 function [x,lambda]= mssR(A,d,n)
 
 s=4*d;                                      %target embedding dimension
@@ -57,13 +58,15 @@ a=zeros(n,1);                               %preallocate a
 In=eye(n);                                  %preallocate identity to avoid reformation. 
 
 for j=2:d
-    t=In;                               %temp starting matrix 
+    t=In;                                   %temp starting matrix 
     for i=1:k                   
      if(j-i<=0)                             %per the paper when i>=0 break 
          break;
      end
-     a=B(:,j-i);
-     t=t-a*a';     %Subtract the computed value from I 
+     %a=B(:,j-i);
+     % index = 1:a(1)+1:a(1)*a(2); 
+     %a(index)=a(index)+1;
+     %t=t-a*a';                              %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB
 
