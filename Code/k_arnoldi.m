@@ -1,6 +1,6 @@
-function [lam,res] = arnoldi(Afun,n,m,shift)
+function [lam,res] = k_arnoldi(Afun,n,m,k,shift)
 
-if nargin < 4, shift = inf; end
+if nargin < 5, shift = inf; end
 
 %% initialize
 V = zeros(n,m+1);
@@ -8,7 +8,7 @@ V(:,1) = ones(n,1)/sqrt(n);
 H = zeros(m+1,m);
 
 %% Arnoldi iteration
-for j = 1:m
+for j = 1:k
     if n > 1000, fprintf('arnoldi iteration %i\n',j); end
     [V,H] = arnoldi_step(Afun,V,H,j);
 end
@@ -22,7 +22,7 @@ else
     [S,lam] = eig(H(1:m,1:m),'vector');
     if ~isinf(shift), lam = shift + 1./lam; end
     [lam,idx] = sort(lam);
-    res = abs(H(m+1,m)*S(end,idx))';
+    res = abs(H(m+1,m)*S(end,idx))'; %%check for res computations before calling it/ 
 end
 
 end
