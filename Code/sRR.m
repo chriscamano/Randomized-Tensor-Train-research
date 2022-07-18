@@ -13,19 +13,20 @@
 % Estimated residual norms \hat{r}_{est,i}
 
 d=5;
-n=5000;
+n=8000;
 A=rand(n,n);
 tic;
 [x,lambda]=mssR(A,d,n);
 toc
-% for i =1:d
-%     norm(A*x(:,i))-norm(lambda(i)*x(:,i))
-% end
-%mssR(A,b,d,k,u,tau)
+x=x/norm(x);
+for i =1:d
+    norm(A*x(:,i)-lambda(i)*x(:,i))
+end
+% mssR(A,b,d,k,u,tau)
 % tic;
 % [V,D]=eigs(A,d);
 % toc
-% %seems like it only really gets the first eigenvalue/round state
+% % %seems like it only really gets the first eigenvalue/round state
 
 function [x,lambda]= mssR(A,d,n)
 
@@ -39,8 +40,9 @@ S=zeros(s,n);
 D=zeros(s,n);                               %create diagonal projector matrix onto s coordinates 
 for i=1:n
    D(randi([1,s]),i)=1; 
-end                                         
-F=dftmtx(n);                                %create unitary discrete fourier transform                                             
+end
+% F=fft(eye(n));
+F=dftmtx(n);                                %create unitary discrete fourier transform
 E=diag(exp(1i*2*pi*rand(n,1)));             %create diagonal steinhaus matrix 
 S=sqrt(d/s)*D*F*E;                          %form subsampled random fourier transform
 
@@ -63,10 +65,10 @@ for j=2:d
      if(j-i<=0)                             %per the paper when i>=0 break 
          break;
      end
-     %a=B(:,j-i);
+%      a=B(:,j-i);
      % index = 1:a(1)+1:a(1)*a(2); 
      %a(index)=a(index)+1;
-     %t=t-a*a';                              %Subtract the computed value from I 
+%      t=t-a*a';                              %Subtract the computed value from I 
     end
    w(:,j)=t*AB(:,j-1);                      %multiply by AB
 
