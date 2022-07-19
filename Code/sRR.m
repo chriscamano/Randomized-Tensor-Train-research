@@ -31,6 +31,7 @@ norm(A*x(:,1)-lambda(1)*x(:,1))
 tic;
 [V,D]=eigs(A,1);
 toc
+norm(A*V(:,1)-D(1)*V(:,1))
 % % %seems like it only really gets the first eigenvalue/round state
 
 function [x,lambda]= mssR(A,d,n)%tau,m

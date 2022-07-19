@@ -31,15 +31,15 @@ q1=rand(n,1);
 q1 = q1/norm(q1);
 
 %% Line 6                                    d-truncated Arnoldi iteration
-m=10;
+d=6;
 
 
-B = zeros(n,m);                               % pre-allocate krylov subspace B
+B = zeros(n,d);                               % pre-allocate krylov subspace B
 B(:,1) = q1;                                  % Store first Arnoldi vector 
-H = zeros(m,m-1);                             % pre-allocate H
+H = zeros(d,d-1);                             % pre-allocate H
 z=zeros(n,1);
 
-for i=1:m-1  
+for i=1:d-1  
     z = A*B(:,i);
     delta = norm(z);
     %% orthogonalize
