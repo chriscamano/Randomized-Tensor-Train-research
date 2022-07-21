@@ -14,15 +14,14 @@ function [X,Lambda] = rarnoldi(A,k,tau)
 
 
 if nargin <3 tau=1e-10;
-% shift for mgs **
-% A
-% k
-%
-%
+    
 
-
-d=5;
+    
 n=size(A,1);
+d=10;
+pass =0;
+while (~pass)
+
 s=4*d;                                        % target embedding dimension                         
 %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
 S=SRFT(s,n);                                
@@ -31,7 +30,7 @@ q1=rand(n,1);
 q1 = q1/norm(q1);
 
 %% Line 6                                    d-truncated Arnoldi iteration
-d=6;
+
 
 
 B = zeros(n,d);                               % pre-allocate krylov subspace B
@@ -81,13 +80,28 @@ Mhat=T\(U'*D);                              %Form minimizer M hat via triangular
 % y=y(:,ii);
 
 %Lambda=diag(Lambda);                            
+%% check norms and recallibrate if krylov space is not large enough
 X=B*y;
 X=X./vecnorm(X);
+for i=1:k
+    res=norm(A*X(:,i)-Lambda(i)*X(:,i));
+    if(res>tau)
+       d=d+n*.1;
+       break;
+    end
+    if(i==k)
+       pass=1;
+    end
+end
+
+end
 
 
 
 
-%helper fucntion for S and also CHECK 
+
+
+%helper fucntion for S and also ``CHECK 
 
 % compute residuals of oredered ritz pairs and update the dimension of the
 % krylov subspace in the event that there is a bad res on one of the

@@ -1,96 +1,108 @@
-function [X,Lambda,Res] = rarnoldi(A,k,tau)
-%if nargin <** tau=1e-10;
-% shift for mgs **
-% A
-% k
-%
-%
-s=4*d;                                      %target embedding dimension
-w=zeros(n,d);                               %init w vectors                            %init Basis
-S=zeros(s,n);                               %init S 
-d0=5;                                       %default number of basis vectors/ 
+function [X,Lambda] = rarnoldi(A,k,tau)
+% Implementation of the sketched rayleigh-ritz method described by authors
+% Yuji Nakatsukasa and Joel Tropp in Feburary 2022 preprint:
+% "Fast & Accurate Randomized Algorithms For Linear Systems and Eigenvalue Problems. 
+% implementation by Chris Camano Lawrence Berkeley National Laboratory. 
+%% Algorithm details
+% Pre: Square matrix and vector , basis dimension d, nuymber k of vector for 
+% partial orthogonalization, stability tolerance tol =O(u^-1), convergence tolerance 
+% \tau.
+% 
+% Post: Approximate eigenpairs (x_i,\lambda_i) such that Ax_i \approx \lambda_ix_i. 
+% Estimated residual norms \hat{r}_{est,i}
+
+
+
+if nargin <3 tau=1e-10;
+    
+
+    
 n=size(A,1);
+d=10;
+pass =0;
+while (~pass)
 
-
-
-%% Line 2                                   Create subsampled random fourier transform embedding (SRFT)
-S= zeros(s,n);
-for  i=1:s
-    z=zeros(n,1);
-    z(randi([1,n]))=exp(1i*2*pi*rand);
-    S(i,:)=fft(z);
-end
-
-%% Line 3
-w(:,1)=randn(n,1);                          %init starting vector
-%% Line 4
-B=zeros(n,d);                               %init Basis
-B(:,1)=(w(:,1)/norm(w(:,1)));               %Normalize and init basis vector
-AB=zeros(n,d);                              %init AB
-AB(:,1)=A*B(:,1);                           %init first vector of AB based on guess 
-
-%% Line                                     d-truncated Arnoldi iteration
-m=10;
+s=4*d;                                        % target embedding dimension                         
+%% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
+S=SRFT(s,n);                                
+%% Line 3                                     % init random starting vector    
 q1=rand(n,1);
 q1 = q1/norm(q1);
 
-Q = zeros(n,m); Q(:,1) = q1;
-H = zeros(m,m-1);
-for i=1:m-1
-    z = A*Q(:,i);
+%% Line 6                                    d-truncated Arnoldi iteration
+
+
+
+B = zeros(n,d);                               % pre-allocate krylov subspace B
+B(:,1) = q1;                                  % Store first Arnoldi vector 
+H = zeros(d,d-1);                             % pre-allocate H
+z=zeros(n,1);
+
+for i=1:d-1  
+    z = A*B(:,i);
     delta = norm(z);
     %% orthogonalize
-    h1 = Q(:,1:i)'*z;
-    z = z - Q(:,1:i)*h1;
+    h1 = B(:,1:i)'*z;
+    z = z - B(:,1:i)*h1;
     %% reorthogonalize
     h2 = 0;
     if norm(z) < 0.5*delta
-        h2 = Q(:,1:i)'*z;
-        z = z - Q(:,1:i)*h2;
+        h2 = B(:,1:i)'*z;
+        z = z - B(:,1:i)*h2;
     end
     %% update H
     H(1:i,i) = h1 + h2;
     H(i+1,i) = norm(z);
     %% expand subspace
-    Q(:,i+1) = z/H(i+1,i);
+    B(:,i+1) = z/H(i+1,i);
 end
 %% Line 7 
-B=Q;
-M=A*B;
+ %M=A*B; small improvement about .001
+
+ %% Line 8
+C=S*B;                                      % Sketch basis C=S[b_1,...,b_dmax]  
+D=S*(A*B);                                  % Sketch D=S[m_1,...m_dmax]
+%% Line 9
+[U,T]=qr(C,0);                              %Compute thin QR of C  
+%[U,T,p]=qr(C,0);                           %Compute thin QR of C with pivoting 
+%% Line 11
+if(cond(T)>1/tau )
+    B=B/T;                                  %whiten B  
+end
+%% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
+                    
+                                            
+Mhat=T\(U'*D);                              %Form minimizer M hat via triangular substitution
+[y,Lambda]=eig(Mhat,'vector');              %invoke QR algorithm with vector output. ;  
+
+% [~,ii]=sort(abs(lambda));                 %sort eigenvalues by magnitidue 
+% lambda=lambda(ii);
+% y=y(:,ii);
+
+%Lambda=diag(Lambda);                            
+%% check norms and recallibrate if krylov space is not large enough
+X=B*y;
+X=X./vecnorm(X);
+for i=1:k
+    res=norm(A*X(:,i)-Lambda(i)*X(:,i));
+    if(res>tau)
+       d=d+n*.1;
+       break;
+    end
+    if(i==k)
+   pass=1;
+end
+end
+
+end
 
 
 
 
 
 
+%helper fucntion for S and also ``CHECK 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%helper fucntion for S and also 
 % compute residuals of oredered ritz pairs and update the dimension of the
 % krylov subspace in the event that there is a bad res on one of the
 % eigenvalues. 

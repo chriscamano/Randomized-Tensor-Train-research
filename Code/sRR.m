@@ -17,21 +17,25 @@
 %testing d. 
 
 
-d=5; %number of krylov vectors start at 20 for adaptive, then paramterize the value for user input. 
-n=5000;
-rng(100);
-A=sprand(n,n,.1);
+%d=5; %number of krylov vectors start at 20 for adaptive, then paramterize the value for user input. 
+n=1000;
+%rng(100);
+A=rand(n,n);
+k=2; %number eigenpairs
 tic;
-[x,lambda]=rarnoldi(A,d);
+[x,lambda]=rarnoldi(A,k);
 toc
 %x=x./vecnorm(x);
-norm(A*x(:,1)-lambda(1)*x(:,1))
+for i =1:k
+    norm(A*x(:,i)-lambda(i)*x(:,i))
+end
+
 
 % mssR(A,b,d,k,u,tau)
 tic;
-[V,D]=eigs(A,1);
+[V,D]=eigs(A,k);
 toc
-norm(A*V(:,1)-D(1)*V(:,1))
+% norm(A*V(:,1)-D(1)*V(:,1))
 % % %seems like it only really gets the first eigenvalue/round state
 
 function [x,lambda]= mssR(A,d,n)%tau,m
@@ -82,7 +86,7 @@ In=eye(n);                                  %preallocate identity to avoid refor
                                             %   (M+1)-by-M upper Hessenberg matrix H such that
                                             %   A*Q(:,1:M) = Q(:,1:M)*H(1:M,1:M) + H(M+1,M)*Q(:,M+1)*E_M',
                                             %   where E_M is the M'th column of the M-by-M identity matrix.
-m=10;
+m=5;
 
 q1=rand(n,1);
 q1 = q1/norm(q1);
@@ -109,8 +113,6 @@ for i=1:m-1
     %% expand subspace
     Q(:,i+1) = z/H(i+1,i);
 end
-
-
 %% Line 7 
 B=Q;
 M=A*B;
