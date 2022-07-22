@@ -21,9 +21,8 @@ q1 = q1/norm(q1);
 %% Line 6                                       d-truncated Arnoldi iteration
 B = zeros(n,d);                                 % pre-allocate krylov subspace B
 B(:,1) = q1;                                    % Store first Arnoldi vector                                             
-%% orthogonalize 
+%% Build subspace 
 B=expandArnoldi(A,B,1,d);
-
 for j=1:100
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
@@ -40,11 +39,11 @@ for j=1:100
     Mhat=T\(U'*(S*(A*B)));                      %Form minimizer M hat via triangular substitution
     [y,Lambda]=eig(Mhat,'vector');              %invoke QR algorithm with vector output. ;  
 
-
-%experiment with other sorting.
-%     [~,ii]=sort(abs(Lambda));                 %sort eigenvalues by magnitidue 
-%     Lambda=Lambda(ii); 
-%     y=y(:,ii);
+    
+    %experiment with other sorting.
+    %     [~,ii]=sort(abs(Lambda));                 %sort eigenvalues by magnitidue 
+    %     Lambda=Lambda(ii); 
+    %     y=y(:,ii);
 
                           
     %% check norms and recallibrate if krylov space is not large enough
@@ -61,5 +60,6 @@ for j=1:100
        break; 
     end
 end
+
 end
 
