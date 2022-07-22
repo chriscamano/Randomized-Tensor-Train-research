@@ -22,7 +22,7 @@ n=1000;
 %rng(100);
 %A=HamHeis(5);
 A=randn(n,n);
-k=1; %number eigenpairs
+k=5; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
