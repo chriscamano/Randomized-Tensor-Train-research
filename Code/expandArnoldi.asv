@@ -1,0 +1,8 @@
+function [A,d] = expandArnoldi(A,d,b)
+%EXPANDARNOLDI Summary of this function goes hereb
+%   A: current krylov subspace
+%d : current size
+% b amount to expand by. 
+d=
+end
+

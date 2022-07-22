@@ -20,8 +20,9 @@
 %d=5; %number of krylov vectors start at 20 for adaptive, then paramterize the value for user input. 
 n=1000;
 %rng(100);
-A=rand(n,n);
-k=2; %number eigenpairs
+%A=HamHeis(5);
+A=randn(n,n);
+k=1; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
@@ -31,10 +32,16 @@ for i =1:k
 end
 
 
+
+
+
 % mssR(A,b,d,k,u,tau)
 tic;
-[V,D]=eigs(A,k);
+[V,D]=eig(A);
 toc
+hold off;
+plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
+plot(real(diag(lambda)),imag(real(diag(lambda))),'o');
 % norm(A*V(:,1)-D(1)*V(:,1))
 % % %seems like it only really gets the first eigenvalue/round state
 
