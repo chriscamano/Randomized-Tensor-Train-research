@@ -23,7 +23,6 @@ k=5; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
-
 for i =1:k
     norm(A*x(:,i)-lambda(i)*x(:,i))
 end
@@ -56,7 +55,7 @@ plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
 % 
 % %F=fft(eye(n));
 % %F=dftmtx(n);                                %create unitary discrete fourier transform
-% %E=diag(exp(1i*2*pi*rand(n,1)));             %create diagonal steinhaus matrix 
+% %E=diag(exp(1i*2*pi*rand(n,1)));              %create diagonal steinhaus matrix 
 % % S=sqrt(d/s)*D*F*E;                         %form subsampled random fourier transform  
 % S= zeros(s,n);
 % for  i=1:s
