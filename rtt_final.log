@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.8.21)  20 JUL 2022 22:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.8.21)  22 JUL 2022 08:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -789,18 +789,6 @@ LaTeX Warning: Label `eq:four' multiply defined.
 LaTeX Warning: Label `sec:level3' multiply defined.
 
 
-Package natbib Warning: Citation `SJL' multiply defined.
-
-
-Package natbib Warning: Citation `SJL' multiply defined.
-
-
-Package natbib Warning: Citation `SJL' multiply defined.
-
-
-Package natbib Warning: Citation `SJL' multiply defined.
-
-
 LaTeX Warning: Label `sec:level3' multiply defined.
 
 
@@ -808,6 +796,18 @@ LaTeX Warning: Label `sec:level3' multiply defined.
 
 
 LaTeX Warning: Label `sec:level3' multiply defined.
+
+
+Package natbib Warning: Citation `SJL' multiply defined.
+
+
+Package natbib Warning: Citation `SJL' multiply defined.
+
+
+Package natbib Warning: Citation `SJL' multiply defined.
+
+
+Package natbib Warning: Citation `SJL' multiply defined.
 
 )
 \openout1 = `rtt_final.aux'.
@@ -910,7 +910,7 @@ mcm/m/it/10 X \OMS/ztmcm/m/n/10 2 \U/msb/m/n/10 R[]$
  []
 
 ./rtt_final.tex:99: Extra }, or forgotten $.
-l.99 ...rc X^{(3)}\circ X^{(4)}\circ X^{(5)}\circ}
+l.99 ...)}\circ X^{(3)}\circ X^{(4)}\circ X^{(5)}}
                                                   $ in the following diagram
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -923,21 +923,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 95--100
 
  []
 
-./rtt_final.tex:140: Missing $ inserted.
-<inserted text> 
-                $
-l.140 ...R=max(R_n)$, N is the order and  n=max(n_
-                                                  k).\\
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
 
-./rtt_final.tex:141: Missing $ inserted.
-<inserted text> 
-                $
-l.141 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+Underfull \hbox (badness 1960) in paragraph at lines 95--100
+\T1/ptm/m/n/10 An ex-am-ple re-sul-tant ten-sor net-work of this for-mat is
+ []
+
+
+Underfull \hbox (badness 3078) in paragraph at lines 139--141
+[]\T1/ptm/m/n/10 This de-com-po-si-tion is tra-di-tion-ally formed by us-ing
+ []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 139--141
@@ -953,16 +947,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 161--162
 
  []
 
-./rtt_final.tex:177: Missing $ inserted.
+./rtt_final.tex:187: Missing $ inserted.
 <inserted text> 
                 $
-l.177 ...approximate eigenpair (\textbf{By},\theta
+l.187 ...approximate eigenpair (\textbf{By},\theta
                                                   }).\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-./rtt_final.tex:177: Extra }, or forgotten $.
-l.177 ...pproximate eigenpair (\textbf{By},\theta}
+./rtt_final.tex:187: Extra }, or forgotten $.
+l.187 ...pproximate eigenpair (\textbf{By},\theta}
                                                   ).\\
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -970,55 +964,55 @@ you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-./rtt_final.tex:178: Missing $ inserted.
+./rtt_final.tex:188: Missing $ inserted.
 <inserted text> 
                 $
-l.178 
+l.188 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 176--178
+Underfull \hbox (badness 10000) in paragraph at lines 186--188
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 184--186
+Underfull \hbox (badness 10000) in paragraph at lines 194--196
 
  []
 
 
-Underfull \hbox (badness 1655) in paragraph at lines 184--186
+Underfull \hbox (badness 1655) in paragraph at lines 194--196
 \T1/ptm/m/n/10 This pro-ce-dure is re-ferred to as the sketched Rayleigh
  []
 
 
-./rtt_final.tex:209: LaTeX Error: There's no line here to end.
+./rtt_final.tex:219: LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.209 T
+l.219 T
        wo iterface cores are constructed from the remaning tensor train to t...
 
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 231--233
-
- []
-
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 242--244
+Underfull \hbox (badness 10000) in paragraph at lines 241--243
 
  []
 
-./rtt_final.tex:246: Extra }, or forgotten $.
-l.246 ...{Let } \bar{A}=X_{\neq k}^TA^kX_{\neq k}}
+
+Underfull \hbox (badness 10000) in paragraph at lines 252--254
+
+ []
+
+./rtt_final.tex:256: Extra }, or forgotten $.
+l.256 ...{Let } \bar{A}=X_{\neq k}^TA^kX_{\neq k}}
                                                   $
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1027,29 +1021,29 @@ the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
 
-Underfull \hbox (badness 1270) in paragraph at lines 254--256
+Underfull \hbox (badness 1270) in paragraph at lines 264--266
 \T1/ptm/m/n/10 for fu-ture work re-gard-ing ten-sor con-trac-tion due to the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--256
+Underfull \hbox (badness 10000) in paragraph at lines 264--266
 
  []
 
 
-Underfull \hbox (badness 1057) in paragraph at lines 259--263
-\T1/ptm/m/n/10 could be fur-ther ran-dom-ized by re-ly-ing on a rSVD for
+Underfull \hbox (badness 1048) in paragraph at lines 269--273
+\T1/ptm/m/n/10 ran-dom-ized by re-ly-ing on a rSVD for or-thog-o-nal-iza-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 259--263
+Underfull \hbox (badness 10000) in paragraph at lines 269--273
 
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 272.
-./rtt_final.tex:280: Misplaced alignment tab character &.
-l.280 ...akatsukasa, Yuji and Tropp, Joel A.Fast &
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
+./rtt_final.tex:290: Misplaced alignment tab character &.
+l.290 ...akatsukasa, Yuji and Tropp, Joel A.Fast &
                                                   ; Accurate Randomized Algo...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -1058,8 +1052,8 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
-No file rtt_final.bbl.
 [3]
+No file rtt_final.bbl.
 No file rtt_final.bbl.
 No file rtt_final.bbl.
 
@@ -1078,11 +1072,11 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  20239 strings out of 478542
  377034 string characters out of 5854402
- 749684 words of memory out of 5000000
+ 748609 words of memory out of 5000000
  37728 multiletter control sequences out of 15000+600000
  473864 words of font info for 150 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 106i,17n,108p,973b,1231s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 106i,17n,108p,975b,1231s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texl
 ive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2021/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/
@@ -1098,7 +1092,7 @@ l/usyr.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texl
 ive/2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2021/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2021/texmf-dist/fonts/type1/urw/
 times/utmri8a.pfb>
-Output written on rtt_final.pdf (4 pages, 169961 bytes).
+Output written on rtt_final.pdf (4 pages, 170937 bytes).
 PDF statistics:
  97 PDF objects out of 1000 (max. 8388607)
  60 compressed objects within 1 object stream
