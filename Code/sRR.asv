@@ -23,6 +23,7 @@ k=5; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
+
 for i =1:k
     norm(A*x(:,i)-lambda(i)*x(:,i))
 end
@@ -30,12 +31,18 @@ end
 tic;
 [V,D]=eig(A);
 toc
+figure();
+l=abs(D)
+plot(l(1:k)
 
-hold off;
-plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
-plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
-
-
+%hold off;
+%plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
+%plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
+%[V,D]=eig(A);
+ %plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
+ plot(real(diag(Lambda)),imag(real (diag(Lambda))),'o')
+% ;
+%
 %% old prototype 
 % function [x,lambda]= mssR(A,d,n)%tau,m
 % tau=1e-10;
@@ -55,7 +62,7 @@ plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
 % 
 % %F=fft(eye(n));
 % %F=dftmtx(n);                                %create unitary discrete fourier transform
-% %E=diag(exp(1i*2*pi*rand(n,1)));              %create diagonal steinhaus matrix 
+% %E=diag(exp(1i*2*pi*rand(n,1)));             %create diagonal steinhaus matrix 
 % % S=sqrt(d/s)*D*F*E;                         %form subsampled random fourier transform  
 % S= zeros(s,n);
 % for  i=1:s

@@ -16,9 +16,9 @@
 
 
 n=1000;
-rng(100);
-%A=HamHeis(5);
-A=randn(n,n);
+rng(101);
+A=HamHeis(13);
+%A=randn(n,n);
 k=5; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
@@ -31,12 +31,25 @@ end
 tic;
 [V,D]=eig(A);
 toc
+figure();
+l=diag(D);
 
+figure();
+plot(abs(lambda),'MarkerFaceColor','red'); hold on
+plot(abs(diag(D)),'MarkerFaceColor','red'); hold on
 hold off;
-plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
-plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
+figure();
+plot(l,'o','MarkerFaceColor','black'); hold on 
+plot(lambda,'x','MarkerFaceColor','cyan'); hold on 
 
-
+%hold off;
+%plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
+%plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
+%[V,D]=eig(A);
+ %plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
+ %plot(real(diag(Lambda)),imag(real (diag(Lambda))),'o')
+% ;
+%
 %% old prototype 
 % function [x,lambda]= mssR(A,d,n)%tau,m
 % tau=1e-10;

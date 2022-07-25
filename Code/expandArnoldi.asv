@@ -1,20 +1,20 @@
 function [B,d] = expandArnoldi(A,B,d,m)
-%EXPANDARNOLDI Summary of this function goes hereb
-%   A: current krylov subspace
-%d : current size
-% b amount to expand by. 
-
+%EXPANDARNOLDI Summary of this function goes here
+%   A : current krylov subspace
+%   d : current size
+%   m : amount to expand Krylov subspace by  
 n=size(A,1);
-for i=d:(d+m)-1  
-    %z=zeros(n,i);
-    z = A*B(:,i);
+
+for i=d:(d+m)-1 
+    z=zeros(n,i);
+    z = A*B(:,i);                   
     delta = norm(z);
     %% orthogonalize
     h1 = B(:,1:i)'*z;
     z = z - B(:,1:i)*h1;
     %% reorthogonalize
     h2 = 0;
-    if norm(z) < 0.5*delta
+    if norm(z) < 0.5*delta    
         h2 = B(:,1:i)'*z;
         z = z - B(:,1:i)*h2;
     end
@@ -24,6 +24,7 @@ for i=d:(d+m)-1
     %% expand subspace
     B(:,i+1) = z/H(i+1,i);
 end
-d=d+m;
+
+d=d+m;                              %update size in main program
 end
 
