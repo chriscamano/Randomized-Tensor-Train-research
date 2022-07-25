@@ -27,7 +27,7 @@ B = zeros(n,1);                                 % pre-allocate krylov subspace B
 B(:,1) = q1;                                    % Store first Arnoldi vector          
 
 %% Build subspace 
-B=expandArnoldi(A,B,d);
+B=expandArnoldi(A,B,1,d);
 
 for j=1:100
     s=4*d;                                      % target embedding dimension    
@@ -60,7 +60,7 @@ for j=1:100
     res=vecnorm(R);
     
     if(any(res>tau))
-        [B,d]=expandArnoldi(A,B,d);
+        [B,d]=expandArnoldi(A,B,d,d);
     else
         
        break; 
@@ -97,4 +97,3 @@ end
 % plot(abs(Lambda),'x','MarkerFaceColor','blue'); hold on
 % plot(abs(Lambda(1)),'s','MarkerFaceColor','red'); hold on
 % plot(abs(l(1)),'s','MarkerFaceColor','red'); hold onend
-

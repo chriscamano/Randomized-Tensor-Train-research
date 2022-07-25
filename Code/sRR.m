@@ -17,9 +17,9 @@
 
 n=1000;
 rng(101);
-A=HamHeis(13);
+A=HamHeis(6);
 %A=randn(n,n);
-k=5; %number eigenpairs
+k=4; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
@@ -38,9 +38,9 @@ figure();
 plot(abs(lambda),'MarkerFaceColor','red'); hold on
 plot(abs(diag(D)),'MarkerFaceColor','red'); hold on
 hold off;
-figure();
-plot(l,'o','MarkerFaceColor','black'); hold on 
-plot(lambda,'x','MarkerFaceColor','cyan'); hold on 
+% figure();
+% plot(l,'o','MarkerFaceColor','black'); hold on 
+% plot(lambda,'x','MarkerFaceColor','cyan'); hold on 
 
 %hold off;
 %plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
