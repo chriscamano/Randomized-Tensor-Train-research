@@ -19,16 +19,15 @@ n=size(A,1);
 d=k;                                           %starting size for dimension of krylov subsspace      
 
 %% Line 3                                       % init random starting vector    
-q1=rand(n,1);
-q1 = q1/norm(q1);
+q1=randn(n,1);
+
 
 %% Line 6                                       d-truncated Arnoldi iteration
-B = zeros(n,1);                                 % pre-allocate krylov subspace B
-B(:,1) = q1;                                    % Store first Arnoldi vector          
+B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector          
 
 %% Build subspace 
-[B,d]=expandArnoldi(A,B,d);
-
+%[B,d]=expandArnoldi(A,B,d);
+[B d AB]=rBlockKrylov(A,B,2,d);
 for j=1:100
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
@@ -57,8 +56,10 @@ for j=1:100
                      
     R=A*X(:,(1:k))-X(:,(1:k))*diag(Lambda(1:k));
     res=vecnorm(R);
+    %plot(res);hold on
     if(any(res>tau))
-        [B,d]=expandArnoldi(A,B,d);
+        [B d AB]=rBlockKrylov(A,B,2,d);
+        %[B,d]=expandArnoldi(A,B,d);
     else
         
        break; 

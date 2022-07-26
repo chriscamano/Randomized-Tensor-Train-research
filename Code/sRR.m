@@ -17,7 +17,7 @@
 
 n=1000;
 rng(101);
-A=HamHeis(10);
+A=HamHeis(12);
 %A=randn(n,n);
 k=5; %number eigenpairs
 tic;
@@ -25,32 +25,32 @@ tic;
 toc
 
 for i =1:k
-    m=norm(A*x(:,i)-lambda(i)*x(:,i));
-    if(m>1e-10)
-       disp(m,i) 
-    end
+   norm(A*x(:,i)-lambda(i)*x(:,i))
+%     if(m>1e-10)
+%        disp(m,i) 
+%     end
 end
 
 tic;
-[V,D]=eigs(A,k);
+[V,D]=eigs(A,k); 
 toc
 l=diag(D);
-figure();
-plot(l(1:size(lambda,1)),'o','MarkerFaceColor','yellow'); hold on
-plot((lambda),'x','MarkerFaceColor','red'); hold on
-title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
-xlabel('Real(\lambda_i)');
-ylabel('imag(\lambda_i)');
-hold off;
 
-
-figure();
-plot(abs(l(1:size(lambda,1))),'MarkerFaceColor','yellow'); hold on
-plot(abs((lambda)),'MarkerFaceColor','red'); hold on
-title('absolute value of predicted eigenvalues versus expected. ');
-xlabel('\lambda_i');
-ylabel('Magnitude');
-hold off;
+% plot(l(1:size(lambda,1)),'o','MarkerFaceColor','yellow'); hold on
+% plot((lambda),'x','MarkerFaceColor','red'); hold on
+% title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
+% xlabel('Real(\lambda_i)');
+% ylabel('imag(\lambda_i)');
+% hold off;
+% 
+% 
+% figure();
+% plot(abs(l(1:size(lambda,1))),'MarkerFaceColor','yellow'); hold on
+% plot(abs((lambda)),'MarkerFaceColor','red'); hold on
+% title('absolute value of predicted eigenvalues versus expected. ');
+% xlabel('\lambda_i');
+% ylabel('Magnitude');
+% hold off;
 % figure();
 % plot(l,'o','MarkerFaceColor','black'); hold on 
 % plot(lambda,'x','MarkerFaceColor','cyan'); hold on 
