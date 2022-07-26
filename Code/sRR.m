@@ -17,33 +17,84 @@
 
 n=1000;
 rng(101);
-A=HamHeis(12);
+A=HamHeis(11);
 %A=randn(n,n);
 k=5; %number eigenpairs
+%% basic time test
+%srr test
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
 
 for i =1:k
    norm(A*x(:,i)-lambda(i)*x(:,i))
-%     if(m>1e-10)
-%        disp(m,i) 
-%     end
 end
 
+%normal eigs test
 tic;
-[V,D]=eigs(A,k); 
+[V,D]=eigs(A); 
 toc
-l=diag(D);
+%% time testing plot for dense
+% %% time testing plot for hamiltonians
+% c=zeros(10,1);
+% d=zeros(10,1);
+% for i = 1:500:5000 
+%     A=randn(n,n);
+%     tic;
+%     [x,lambda]=rarnoldi(A,k);
+%     c(i,1)=toc;
+%     tic;
+%     [V,D]=eig(A);
+%     d(i,1)=toc;
+% end
+% 
+% plot(c,'-o'); hold on
+% plot(d,'-x'); hold on
+% legend('srr','eigs()');
+% title('srr vs eigs() on hamiltonian data');
+% xlabel('order of hamiltonian. 2^n');
+% ylabel('total compilation time (s)');
 
+
+
+
+
+
+%%
+% %% time testing plot for hamiltonians
+% c=zeros(3);
+% d=zeros(3)
+% for i = 8:13 
+%     A=HamHeis(i);
+%     tic;
+%     [x,lambda]=rarnoldi(A,k);
+%     c(i,1)=toc;
+%     tic;
+%     [V,D]=eigs(A,k);
+%     d(i,1)=toc;
+% end
+% 
+% plot(c,'-o'); hold on
+% plot(d,'-x'); hold on
+% legend('srr','eigs()');
+% title('srr vs eigs() on hamiltonian data');
+% xlabel('order of hamiltonian. 2^n');
+% ylabel('total compilation time (s)');
+% 
+% % 
+% 
+% % 
+%% 
+% l=diag(D);
+% 
 % plot(l(1:size(lambda,1)),'o','MarkerFaceColor','yellow'); hold on
 % plot((lambda),'x','MarkerFaceColor','red'); hold on
 % title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
 % xlabel('Real(\lambda_i)');
 % ylabel('imag(\lambda_i)');
 % hold off;
-% 
-% 
+% % 
+% % 
 % figure();
 % plot(abs(l(1:size(lambda,1))),'MarkerFaceColor','yellow'); hold on
 % plot(abs((lambda)),'MarkerFaceColor','red'); hold on

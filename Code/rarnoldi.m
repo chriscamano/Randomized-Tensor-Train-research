@@ -26,8 +26,8 @@ q1=randn(n,1);
 B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector          
 
 %% Build subspace 
-%[B,d]=expandArnoldi(A,B,d);
-[B d AB]=rBlockKrylov(A,B,2,d);
+[B,d]=expandArnoldi(A,B,d);
+%[B d AB]=rBlockKrylov(A,B,2,d);
 for j=1:100
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
@@ -58,8 +58,8 @@ for j=1:100
     res=vecnorm(R);
     %plot(res);hold on
     if(any(res>tau))
-        [B d AB]=rBlockKrylov(A,B,2,d);
-        %[B,d]=expandArnoldi(A,B,d);
+        %[B d AB]=rBlockKrylov(A,B,2,d);
+        [B,d]=expandArnoldi(A,B,d);
     else
         
        break; 
@@ -71,7 +71,7 @@ Lambda=Lambda(ii);
 
 X=X(:,ii);
 X=X(:,(1:k));
-
+%Lambda=Lambda((1:k));
 end
 %Lambda=Lambda((1:k));
 

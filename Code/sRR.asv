@@ -17,37 +17,73 @@
 
 n=1000;
 rng(101);
-A=HamHeis(10);
-%A=randn(n,n);
+%A=HamHeis(11);
+A=randn(n,n);
 k=5; %number eigenpairs
+%% basic time test
+%srr test
 tic;
 [x,lambda]=rarnoldi(A,k);
 toc
 
 for i =1:k
-    norm(A*x(:,i)-lambda(i)*x(:,i))
+   norm(A*x(:,i)-lambda(i)*x(:,i))
 end
 
+%normal eigs test
 tic;
-[V,D]=eig(A);
+[V,D]=eigs(A); 
 toc
-l=diag(D);
-figure();
-plot(l(1:88),'o','MarkerFaceColor','yellow'); hold on
-plot((lambda),'x','MarkerFaceColor','red'); hold on
-title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
-xlabel('Real(\lambda_i)');
-ylabel('imag(\lambda_i)');
-hold off;
+%% time testing plot for dense
 
 
-figure();
-plot(l(1:88),'o','MarkerFaceColor','yellow'); hold on
-plot((lambda),'x','MarkerFaceColor','red'); hold on
-title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
-xlabel('Real(\lambda_i)');
-ylabel('imag(\lambda_i)');
-hold off;
+
+
+
+
+
+%%
+% %% time testing plot for hamiltonians
+% c=zeros(3);
+% d=zeros(3)
+% for i = 8:13 
+%     A=HamHeis(i);
+%     tic;
+%     [x,lambda]=rarnoldi(A,k);
+%     c(i,1)=toc;
+%     tic;
+%     [V,D]=eigs(A,k);
+%     d(i,1)=toc;
+% end
+% 
+% plot(c,'-o'); hold on
+% plot(d,'-x'); hold on
+% legend('srr','eigs()');
+% title('srr vs eigs() on hamiltonian data');
+% xlabel('order of hamiltonian. 2^n');
+% ylabel('total compilation time (s)');
+% 
+% % 
+% 
+% % 
+%% 
+% l=diag(D);
+% 
+% plot(l(1:size(lambda,1)),'o','MarkerFaceColor','yellow'); hold on
+% plot((lambda),'x','MarkerFaceColor','red'); hold on
+% title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
+% xlabel('Real(\lambda_i)');
+% ylabel('imag(\lambda_i)');
+% hold off;
+% % 
+% % 
+% figure();
+% plot(abs(l(1:size(lambda,1))),'MarkerFaceColor','yellow'); hold on
+% plot(abs((lambda)),'MarkerFaceColor','red'); hold on
+% title('absolute value of predicted eigenvalues versus expected. ');
+% xlabel('\lambda_i');
+% ylabel('Magnitude');
+% hold off;
 % figure();
 % plot(l,'o','MarkerFaceColor','black'); hold on 
 % plot(lambda,'x','MarkerFaceColor','cyan'); hold on 
