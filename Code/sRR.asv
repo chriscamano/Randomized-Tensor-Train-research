@@ -16,9 +16,9 @@
 
 
 n=1000;
-rng(100);
-%A=HamHeis(5);
-A=randn(n,n);
+rng(101);
+A=HamHeis(10);
+%A=randn(n,n);
 k=5; %number eigenpairs
 tic;
 [x,lambda]=rarnoldi(A,k);
@@ -31,16 +31,33 @@ end
 tic;
 [V,D]=eig(A);
 toc
+l=diag(D);
 figure();
-l=abs(D)
-plot(l(1:k)
+plot(l(1:88),'o','MarkerFaceColor','yellow'); hold on
+plot((lambda),'x','MarkerFaceColor','red'); hold on
+title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
+xlabel('Real(\lambda_i)');
+ylabel('imag(\lambda_i)');
+hold off;
+
+
+figure();
+plot(l(1:88),'o','MarkerFaceColor','yellow'); hold on
+plot((lambda),'x','MarkerFaceColor','red'); hold on
+title('Plot of eigenvalues computer by eig(A) vs eigenvalues computed by sketched RR');
+xlabel('Real(\lambda_i)');
+ylabel('imag(\lambda_i)');
+hold off;
+% figure();
+% plot(l,'o','MarkerFaceColor','black'); hold on 
+% plot(lambda,'x','MarkerFaceColor','cyan'); hold on 
 
 %hold off;
 %plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
 %plot(real(diag(lambda)),imag(real (diag(lambda))),'o');
 %[V,D]=eig(A);
  %plot(real(diag(D)),imag(real(diag(D))),'*'); hold on 
- plot(real(diag(Lambda)),imag(real (diag(Lambda))),'o')
+ %plot(real(diag(Lambda)),imag(real (diag(Lambda))),'o')
 % ;
 %
 %% old prototype 

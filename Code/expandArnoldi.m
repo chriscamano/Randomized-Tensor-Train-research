@@ -4,9 +4,11 @@ function [B,d] = expandArnoldi(A,B,m)
 %   m : amount to expand Krylov subspace by  
 
 
-d=size(B,2);                        %compute size of current Krylov space
+d=size(B,2); 
+H=zeros(d+m,d);%compute size of current Krylov space
+
 for i=d:(d+m)-1 
-    z = A*B(:,i);                   
+    z = A*B(:,i); 
     delta = norm(z);
     %% orthogonalize
     h1 = B(:,1:i)'*z;
@@ -22,7 +24,8 @@ for i=d:(d+m)-1
     H(i+1,i) = norm(z);
     %% expand subspace
     B(:,i+1) = z/H(i+1,i);
-end
+end;
 d=d+m;                              %update size in main program
+
 end
 

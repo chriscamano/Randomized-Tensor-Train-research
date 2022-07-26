@@ -16,7 +16,7 @@ if nargin <3
     tau=1e-10;
 end
 n=size(A,1);
-d=10;                                           %starting size for dimension of krylov subsspace      
+d=k;                                           %starting size for dimension of krylov subsspace      
 
 %% Line 3                                       % init random starting vector    
 q1=rand(n,1);
@@ -27,13 +27,13 @@ B = zeros(n,1);                                 % pre-allocate krylov subspace B
 B(:,1) = q1;                                    % Store first Arnoldi vector          
 
 %% Build subspace 
-B=expandArnoldi(A,B,d);
+[B,d]=expandArnoldi(A,B,d);
 
 for j=1:100
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
     S=SRFT(s,n);  
-    C=S*B;                                      % Sketch basis C=S[b_1,...,b_dmax]  
+    C=S*B;                                      % Sketch basis C=S[b_1,...,b_dmax] 
     D=S*(A*B);                                 % Sketch D=S[m_1,...m_dmax]
     
     %% Line 9
@@ -52,13 +52,11 @@ for j=1:100
     X=X./vecnorm(X);                            %Consider X=X(:,(1:k))./vecnorm(X(:,(1:k))); for 58/59
    
     %X=X(:,(1:k));
-    
     %Lambda=Lambda((1:k));
     
-    %R=A*X-X*diag(Lambda);                        
+                     
     R=A*X(:,(1:k))-X(:,(1:k))*diag(Lambda(1:k));
     res=vecnorm(R);
-    
     if(any(res>tau))
         [B,d]=expandArnoldi(A,B,d);
     else
@@ -69,10 +67,10 @@ end
 [~,ii]=sort(abs(Lambda));             %sort eigenvalues by magnitidue 
 ii=flip(ii);
 Lambda=Lambda(ii); 
+
 X=X(:,ii);
 X=X(:,(1:k));
-% [V D]=eig(A);
-% l=diag(D);
+
 end
 %Lambda=Lambda((1:k));
 
@@ -97,4 +95,3 @@ end
 % plot(abs(Lambda),'x','MarkerFaceColor','blue'); hold on
 % plot(abs(Lambda(1)),'s','MarkerFaceColor','red'); hold on
 % plot(abs(l(1)),'s','MarkerFaceColor','red'); hold onend
-
