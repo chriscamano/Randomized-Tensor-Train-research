@@ -14,7 +14,7 @@ for i=p:(p+del_p)-1
     %% special case of i=1
     if(i==1)
         z = A*B(:,1:q);
-        delta = norm(z);
+        delta = z./norm(z);
          %% orthogonalize
         h1 = B(:,1:q)'*z; %h1
         z = z - B(:,1:q)*h1;
@@ -54,7 +54,7 @@ for i=p:(p+del_p)-1
         %% expand subspace
         B(:,q+1:q+bsize) = z/H(i+1,i);
     end
-end;
+end
 d=p+del_p;                              %update size in main program
 
 end

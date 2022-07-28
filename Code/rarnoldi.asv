@@ -19,11 +19,11 @@ n=size(A,1);
 d=k;                                           %starting size for dimension of krylov subsspace      
 bsize=50;
 %% Line 3                                       % init random starting vector    
-% q1=randn(n,1);
-% 
-% 
-% %% Line 6                                       d-truncated Arnoldi iteration
-% B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector          
+%q1=randn(n,1);
+
+
+%% Line 6                                       d-truncated Arnoldi iteration
+%B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector          
 
 B=zeros(n,bsize);
 
