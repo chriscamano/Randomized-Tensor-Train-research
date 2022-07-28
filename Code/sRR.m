@@ -15,6 +15,18 @@
 %% Driver Program
 
 
+
+
+
+%%notes for algorithm 
+% output argument for eigs that gives  dimension of krylov subspace 
+% compare dimensions and make sure that the subspace is similar dimension
+% also consider doing an iteration check to find out why eigs is so much faster
+
+%Chebychev recurrence is an orthogonalization tweak. 
+
+
+
 n=1000;
 rng(101);
 A=HamHeis(11);

@@ -9,9 +9,9 @@ H=zeros(d+m,d);%compute size of current Krylov space
 
 for i=d:(d+m)-1 
     z = A*B(:,i); 
-    delta = norm(z);
+    delta = norm(z); % 
     %% orthogonalize
-    h1 = B(:,1:i)'*z;
+    h1 = B(:,1:i)'*z; %h1 
     z = z - B(:,1:i)*h1;
     %% reorthogonalize
     h2 = 0;

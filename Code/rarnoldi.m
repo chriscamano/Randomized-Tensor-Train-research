@@ -17,17 +17,21 @@ if nargin <3
 end
 n=size(A,1);
 d=k;                                           %starting size for dimension of krylov subsspace      
-
+bsize=50;
 %% Line 3                                       % init random starting vector    
-q1=randn(n,1);
+%q1=randn(n,1);
 
 
 %% Line 6                                       d-truncated Arnoldi iteration
-B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector          
+%B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector          
 
+B=zeros(n,bsize);
+
+b_1=randn(n,bsize);
+B(:,1:bsize)=orth(b_1);
 %% Build subspace 
-[B,d]=expandArnoldi(A,B,d);
-%[B d AB]=rBlockKrylov(A,B,2,d);
+%[B,d]=expandArnoldi(A,B,d);
+[B d]=rBlockKrylov(A,B,d);
 for j=1:100
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
@@ -39,9 +43,9 @@ for j=1:100
     [U,T]=qr(C,0);                              %Compute thin QR of C  
     
     %% Line 11
-    if(cond(T)>1/tau )
-        B=B/T;                                  %whiten B  
-    end
+%     if(cond(T)>1/tau )
+%         B=B/T;                                  %whiten B  
+%     end
     
     %% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
     Mhat=T\(U'*D);                      %Form minimizer M hat via triangular substitution
@@ -58,8 +62,8 @@ for j=1:100
     res=vecnorm(R);
     %plot(res);hold on
     if(any(res>tau))
-        %[B d AB]=rBlockKrylov(A,B,2,d);
-        [B,d]=expandArnoldi(A,B,d);
+        [B d ]=rBlockKrylov(A,B,d);
+        %[B,d]=expandArnoldi(A,B,d);
     else
         
        break; 

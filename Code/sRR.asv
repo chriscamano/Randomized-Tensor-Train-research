@@ -15,10 +15,22 @@
 %% Driver Program
 
 
+
+
+
+%%notes for algorithm 
+output argument for eigs that gives  dimension of krylov subspace 
+compare dimensions and make sure that the subspace is similar dimension
+also consider doing an iteration check to find out why eigs is so much faster
+
+%Chebychev recurrence is an orthogonalization tweak. 
+
+
+
 n=1000;
 rng(101);
-%A=HamHeis(11);
-A=randn(n,n);
+A=HamHeis(11);
+%A=randn(n,n);
 k=5; %number eigenpairs
 %% basic time test
 %srr test
@@ -35,7 +47,25 @@ tic;
 [V,D]=eigs(A); 
 toc
 %% time testing plot for dense
-
+% %% time testing plot for hamiltonians
+% c=zeros(10,1);
+% d=zeros(10,1);
+% for i = 1:500:5000 
+%     A=randn(n,n);
+%     tic;
+%     [x,lambda]=rarnoldi(A,k);
+%     c(i,1)=toc;
+%     tic;
+%     [V,D]=eig(A);
+%     d(i,1)=toc;
+% end
+% 
+% plot(c,'-o'); hold on
+% plot(d,'-x'); hold on
+% legend('srr','eigs()');
+% title('srr vs eigs() on hamiltonian data');
+% xlabel('order of hamiltonian. 2^n');
+% ylabel('total compilation time (s)');
 
 
 
