@@ -1,61 +1,43 @@
 
-function [B,d] = rBlockKrylov(A,B,del_p)
+function [B,d] = rBlockKrylov(A,B,del_p,bsize)
 %EXPANDARNOLDI Summary of this function goes here
 %   A : current krylov subspace
 %   m : amount to expand Krylov subspace by
 
-bsize=50;
+global nbit
+
 p=size(B,2)/bsize; %krylov depth
-H=zeros(p*bsize+del_p*bsize,p*bsize);%compute size of current Krylov space
+% H=zeros(p*bsize+del_p*bsize,p*bsize);%compute size of current Krylov space
 
 for i=p:(p+del_p)-1
     q=i*bsize;
+    z = A*B(:,(i-1)*bsize+1:q);                                        %multiply A by ith block of B
+    %delta = norm(z); %
     
-    %% special case of i=1
-    if(i==1)
-        z = A*B(:,1:q);
-        delta = z./norm(z);
-         %% orthogonalize
-        h1 = B(:,1:q)'*z; %h1
-        z = z - B(:,1:q)*h1;
-        
-        %% reorthogonalize
-        h2 =zeros(p,bsize);
-        if norm(z) < 0.5*delta
-            h2 = B(:,1:q)'*z;
-            z = z - B(:,1:q)*h2;
-        end
-        
-        %% update H
-        H(1:q,1:q) = h1 + h2;
-        H(i+bsize,1:q) = norm(z);
-        
-        %% expand subspace
-        B(:,q+1:q+bsize) = z/H(i+1,i);
-    else
-        z = A*B(:,(i-1)*bsize:q-1);
-        delta = norm(z); %
-        
-        %% orthogonalize
-        h1 = B(:,1:q)'*z; %h1
-        z = z - B(:,1:q)*h1;
-        
-        %% reorthogonalize
-        h2 =zeros(q,bsize);
-        if norm(z) < 0.5*delta
-            h2 = B(:,1:q)'*z;
-            z = z - B(:,1:q)*h2;
-        end
-        
-        %% update H
-        H(1:q,(i-1)*bsize:q-1) = h1 + h2;
-        H(i+bsize,1:q) = norm(z);
-        
-        %% expand subspace
-        B(:,q+1:q+bsize) = z/H(i+1,i);
-    end
+    %% orthogonalize
+    h1 = B(:,1:q)'*z; %h1
+    z = z - B(:,1:q)*h1;
+    
+    %% reorthogonalize
+    % if norm(z) < 0.5*delta
+    h2 = B(:,1:q)'*z;
+    z = z - B(:,1:q)*h2;
+    %  end
+    
+    %% update H
+    %H(1:q,(i-1)*bsize+1:q) = h1 + h2;
+%     H(1:q,(i-1)*bsize+1:q) = h1;
+%     H(i+bsize,1:q) = vecnorm(z);
+    
+    %% expand subspace
+    B(:,q+1:q+bsize) = orth(z./vecnorm(z));
+    
+    %     end
 end
 d=p+del_p;                              %update size in main program
+
+%% BAD!!!
+B = orth(B);
 
 end
 

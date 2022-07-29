@@ -31,7 +31,7 @@ n=1000;
 rng(101);
 A=HamHeis(11);
 %A=randn(n,n);
-k=5; %number eigenpairs
+k=1; %number eigenpairs
 %% basic time test
 %srr test
 tic;
