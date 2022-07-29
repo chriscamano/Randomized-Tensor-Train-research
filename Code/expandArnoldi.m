@@ -3,14 +3,14 @@ function [B,d] = expandArnoldi(A,B,m)
 %   A : current krylov subspace
 %   m : amount to expand Krylov subspace by  
 
-global nbit
+%global nbit
 
 d=size(B,2); 
 H=zeros(d+m,d);%compute size of current Krylov space
 
 for i=d:(d+m)-1 
     z = A*B(:,i); 
-    nbit = nbit + 1;
+    %nbit = nbit + 1;
     delta = norm(z); % 
     %% orthogonalize
     h1 = B(:,1:i)'*z;

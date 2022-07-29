@@ -4,7 +4,7 @@ function [B,d] = rBlockKrylov(A,B,del_p,bsize)
 %   A : current krylov subspace
 %   m : amount to expand Krylov subspace by
 
-global nbit
+%global nbit
 
 p=size(B,2)/bsize; %krylov depth
 % H=zeros(p*bsize+del_p*bsize,p*bsize);%compute size of current Krylov space

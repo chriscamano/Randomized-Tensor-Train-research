@@ -1,4 +1,4 @@
-function [X,Lambda] = rarnoldi(A,k,tau)
+function [X,Lambda] = staticrarnoldi(A,k,tau,p)
 % Implementation of the sketched rayleigh-ritz method described by authors
 % Yuji Nakatsukasa and Joel Tropp in Feburary 2022 preprint:
 % "Fast & Accurate Randomized Algorithms For Linear Systems and Eigenvalue Problems. 
@@ -17,10 +17,6 @@ if nargin <3
 end
 n=size(A,1);
 d=k;                                           %starting size for dimension of krylov subsspace      
-%bsize=50;
-%;
-
-
 
 %% Line 3                                       % init random starting vector    
 %% Line 6                                       d-truncated Arnoldi iteration      
@@ -29,14 +25,8 @@ d=k;                                           %starting size for dimension of k
 q1=randn(n,1);
 B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector  
 [B,d]=expandArnoldi(A,B,d);
-
-%% Random Block Subspace mode 
-% B=zeros(n,bsize);
-% b_1=randn(n,bsize);
-% B(:,1:bsize)=orth(b_1);
-% [B d]=rBlockKrylov(A,B,d,bsize);
-%% Expand subspace until tolerance on k eigen pairs is met. 
-for j=1:100
+for j=2:p
+   [B,d]=expandArnoldi(A,B,d);
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
     S=SRFT(s,n);  
@@ -57,25 +47,9 @@ for j=1:100
     %% check norms and recallibrate if krylov space is not large enough
     X=B*y;
     X=X./vecnorm(X);                            %Consider X=X(:,(1:k))./vecnorm(X(:,(1:k))); for 58/59
-   
-    %X=X(:,(1:k));
-    %Lambda=Lambda((1:k));
-    
-                     
+                  
     R=A*X(:,(1:k))-X(:,(1:k))*diag(Lambda(1:k));
     res=vecnorm(R);
-    
-
-%     semilogy(res);hold on
-%     pause
-    
-    if(any(res>tau))
-        %[B d ]=rBlockKrylov(A,B,d,bsize);
-        [B,d]=expandArnoldi(A,B,d);
-    else
-        
-       break; 
-    end
 end
 [~,ii]=sort(abs(Lambda));             %sort eigenvalues by magnitidue 
 ii=flip(ii);
@@ -85,26 +59,3 @@ X=X(:,ii);
 X=X(:,(1:k));
 %Lambda=Lambda((1:k));
 end
-%Lambda=Lambda((1:k));
-
-% figure();
-% plot(abs(Lambda));hold on
-% plot(abs(l));
-% figure();
-% 
-% plot(l(1:20),'o','MarkerFaceColor','black'); hold on 
-% plot(Lambda(1:20),'x','MarkerFaceColor','cyan'); hold on 
-
-
-
-% for i = 1:200
-%   plot(l(1:i),'s','MarkerFaceColor','green'); hold on
-%   plot(Lambda(1:i),'s','MarkerFaceColor','blue'); hold on
-% 
-% end
-
-%plot(l(1),'s','MarkerFaceColor','magenta'); hold on
-% plot(abs(l),'o','MarkerFaceColor','pink');hold on 
-% plot(abs(Lambda),'x','MarkerFaceColor','blue'); hold on
-% plot(abs(Lambda(1)),'s','MarkerFaceColor','red'); hold on
-% plot(abs(l(1)),'s','MarkerFaceColor','red'); hold onend

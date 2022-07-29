@@ -19,9 +19,9 @@
 
 
 %%notes for algorithm 
-output argument for eigs that gives  dimension of krylov subspace 
-compare dimensions and make sure that the subspace is similar dimension
-also consider doing an iteration check to find out why eigs is so much faster
+% output argument for eigs that gives  dimension of krylov subspace 
+% compare dimensions and make sure that the subspace is similar dimension
+% also consider doing an iteration check to find out why eigs is so much faster
 
 %Chebychev recurrence is an orthogonalization tweak. 
 
@@ -31,37 +31,40 @@ n=1000;
 rng(101);
 A=HamHeis(11);
 %A=randn(n,n);
-k=5; %number eigenpairs
+k=3; %number eigenpairs
 %% basic time test
 %srr test
-tic;
-[x,lambda]=rarnoldi(A,k);
-toc
+% tic;
+% [x,lambda]=rarnoldi(A,k);
+% toc
 
-for i =1:k
-   norm(A*x(:,i)-lambda(i)*x(:,i))
-end
+% for i =1:k
+%    norm(A*x(:,i)-lambda(i)*x(:,i))
+% end
+% 
+% %normal eigs test
+% tic;
+% [V,D]=eigs(A); 
+% toc
+%%time testing plot for dense
 
-%normal eigs test
-tic;
-[V,D]=eigs(A); 
-toc
-%% time testing plot for dense
-% %% time testing plot for hamiltonians
-% c=zeros(10,1);
-% d=zeros(10,1);
-% for i = 1:500:5000 
+% c=zeros(3,1);
+% d=zeros(3,1);
+% ax=zeros(3,1);
+% for i = 400:400:40000 
+%     disp(i)
 %     A=randn(n,n);
 %     tic;
 %     [x,lambda]=rarnoldi(A,k);
-%     c(i,1)=toc;
+%     c(i/400)=toc;
 %     tic;
 %     [V,D]=eig(A);
-%     d(i,1)=toc;
+%     d(i/400)=toc;
+%     ax(i/400)=i;
 % end
 % 
-% plot(c,'-o'); hold on
-% plot(d,'-x'); hold on
+% plot(ax,c,'-o'); hold on
+% plot(ax,d,'-x'); hold on
 % legend('srr','eigs()');
 % title('srr vs eigs() on hamiltonian data');
 % xlabel('order of hamiltonian. 2^n');
@@ -69,33 +72,37 @@ toc
 
 
 
+% %  [x,lambda]=staticrarnoldi(A,k,1000);
+
+format short e	
+%
+%% time testing plot for hamiltonians
+c=[0 0 0 0 0];
+d=[0 0 0 0 0];
+
+for m = 5:13 
+    disp(m)
+    A=HamHeis(m);
+    tic;
+    [x,lambda]=rarnoldi(A,k);
+    c(m)=toc;
+    tic;
+    [V,D]=eigs(A,k);
+    d(m)=toc;
+end
+
+ytickformat('%.1f')
+plot(c,'-o','DisplayName','srr','LineWidth',5); hold on
+plot(d,'-x','DisplayName','eigs','LineWidth',5); hold on
+hold off
+legend('srr','eigs()','FontSize',33);
+title('srr vs eigs() on Hamiltonian of Size 2^n','FontSize',33);
+xlabel('Order of Hamiltonian. 2^n','FontSize',33);
+ylabel('Total Compilation Time (s)','FontSize',33);
 
 
 
-%%
-% %% time testing plot for hamiltonians
-% c=zeros(3);
-% d=zeros(3)
-% for i = 8:13 
-%     A=HamHeis(i);
-%     tic;
-%     [x,lambda]=rarnoldi(A,k);
-%     c(i,1)=toc;
-%     tic;
-%     [V,D]=eigs(A,k);
-%     d(i,1)=toc;
-% end
 % 
-% plot(c,'-o'); hold on
-% plot(d,'-x'); hold on
-% legend('srr','eigs()');
-% title('srr vs eigs() on hamiltonian data');
-% xlabel('order of hamiltonian. 2^n');
-% ylabel('total compilation time (s)');
-% 
-% % 
-% 
-% % 
 %% 
 % l=diag(D);
 % 
