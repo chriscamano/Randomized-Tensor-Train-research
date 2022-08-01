@@ -3,6 +3,7 @@ function [X,Lambda] = rarnoldi(A,k,tau)
 % Yuji Nakatsukasa and Joel Tropp in Feburary 2022 preprint:
 % "Fast & Accurate Randomized Algorithms For Linear Systems and Eigenvalue Problems. 
 % implementation by Chris Camano Lawrence Berkeley National Laboratory. 
+
 %% Algorithm details
 % Pre: Square matrix and vector , basis dimension d, nuymber k of vector for 
 % partial orthogonalization, stability tolerance tol =O(u^-1), convergence tolerance 
@@ -18,7 +19,7 @@ end
 n=size(A,1);
 d=k;                                           %starting size for dimension of krylov subsspace      
 %bsize=50;
-%;
+
 
 
 
@@ -27,7 +28,7 @@ d=k;                                           %starting size for dimension of k
 
 %% normal basis construction mode. 
 q1=randn(n,1);
-B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi vector  
+B(:,1) = q1/norm(q1);                           %    Store first Arnoldi vector  
 [B,d]=expandArnoldi(A,B,d);
 
 %% Random Block Subspace mode 
@@ -35,13 +36,15 @@ B(:,1) = q1/norm(q1);                                 %    Store first Arnoldi v
 % b_1=randn(n,bsize);
 % B(:,1:bsize)=orth(b_1);
 % [B d]=rBlockKrylov(A,B,d,bsize);
+
+
 %% Expand subspace until tolerance on k eigen pairs is met. 
 for j=1:100
     s=4*d;                                      % target embedding dimension    
     %% Line 2                                     Create subsampled random fourier transform embedding (SRFT)
     S=SRFT(s,n);  
     C=S*B;                                      % Sketch basis C=S[b_1,...,b_dmax] 
-    D=S*(A*B);                                 % Sketch D=S[m_1,...m_dmax]
+    D=S*(A*B);                                  % Sketch D=S[m_1,...m_dmax]
     
     %% Line 9
     [U,T]=qr(C,0);                              %Compute thin QR of C  
@@ -52,7 +55,7 @@ for j=1:100
     end
     
     %% Line 12                                  solve eigenproblem T^-1U^*Dy_i=\lambda_iy_i for i=1-d
-    Mhat=T\(U'*D);                      %Form minimizer M hat via triangular substitution
+    Mhat=T\(U'*D);                              %Form minimizer M hat via triangular substitution
     [y,Lambda]=eig(Mhat,'vector');              %invoke QR algorithm with vector output. ;                           
     %% check norms and recallibrate if krylov space is not large enough
     X=B*y;
@@ -77,7 +80,7 @@ for j=1:100
        break; 
     end
 end
-[~,ii]=sort(abs(Lambda));             %sort eigenvalues by magnitidue 
+[~,ii]=sort(abs(Lambda));                        %sort eigenvalues by magnitidue 
 ii=flip(ii);
 Lambda=Lambda(ii); 
 

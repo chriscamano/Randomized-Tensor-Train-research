@@ -1,5 +1,6 @@
 function H = HamHeis(n,Jx,Jy,Jz,hx,hy,hz)
 % Heisenberg Hamiltonian
+% Author: Roel Van Beumeen
 % See https://en.wikipedia.org/wiki/Quantum_Heisenberg_model
 
 %% default arguments

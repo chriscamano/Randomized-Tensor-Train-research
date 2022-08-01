@@ -1,9 +1,7 @@
 
 function [B,d] = rBlockKrylov(A,B,del_p,bsize)
 % This function is an incomplete blocked version of the k truncated arnoldi
-% process that functions by using a blocked version of the krylov vector
-% construction process. Issues currently are unidentified and most likley
-% related to vectorization syntax errors. 
+% process that functions by using a blocked version of the krylobv 
 % 
 
 
@@ -14,6 +12,8 @@ function [B,d] = rBlockKrylov(A,B,del_p,bsize)
 %global nbit
 
 p=size(B,2)/bsize; %krylov depth
+% H=zeros(p*bsize+del_p*bsize,p*bsize);%compute size of current Krylov space
+
 for i=p:(p+del_p)-1
     q=i*bsize;
     z = A*B(:,(i-1)*bsize+1:q);                                        %multiply A by ith block of B
