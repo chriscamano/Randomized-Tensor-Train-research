@@ -21,8 +21,8 @@ Randomization is included throughout the original algorithm with observable impr
 ## 2. Sketched Rayleigh-Ritz 
 Additional work includes an unoptimized implementation of  the sketched rayleigh-ritz form the following paper:
 Yuji Nakatsukasa and Joel Tropp in Feburary 2022 preprint:Fast & Accurate Randomized Algorithms For Linear Systems and Eigenvalue Problems. 
-This implementation outperforms eigs() in time on Heisenberg Hamiltonian matrices of size $2^13 \times 2^13$ or greater. 
+This implementation outperforms eigs() in time on Heisenberg Hamiltonian matrices of size $2^{13} \times 2^{13}$ or greater. 
 
 
 
-This work was supported in part by the U.S. department of Energy, Office of Science, Office of Workforce Development for Teachers and Students (WDTS) under the Science Undergraduate Laboratory Internship (SULI) Program. 
+## This work was supported in part by the U.S. department of Energy, Office of Science, Office of Workforce Development for Teachers and Students (WDTS) under the Science Undergraduate Laboratory Internship (SULI) Program. 
