@@ -25,4 +25,4 @@ This implementation outperforms eigs() in time on Heisenberg Hamiltonian matrice
 
 
 
-** This work was supported in part by the U.S. department of Energy, Office of Science, Office of Workforce Development for Teachers and Students (WDTS) under the Science Undergraduate Laboratory Internship (SULI) Program. **
+**This work was supported in part by the U.S. department of Energy, Office of Science, Office of Workforce Development for Teachers and Students (WDTS) under the Science Undergraduate Laboratory Internship (SULI) Program.**
