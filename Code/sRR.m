@@ -92,13 +92,13 @@ for m = 5:13
 end
 
 ytickformat('%.1f')
-plot(c,'-o','DisplayName','srr'); hold on
-plot(d,'-x','DisplayName','eigs'); hold on
+plot(c,'-o','DisplayName','srr','LineWidth',5); hold on
+plot(d,'-x','DisplayName','eigs','LineWidth',5); hold on
 hold off
-legend('srr','eigs()');
-title('srr vs eigs() on Hamiltonian Data');
-xlabel('Order of Hamiltonian. 2^n');
-ylabel('Total Compilation Time (s)');
+legend('srr','eigs()','FontSize',33);
+title('srr vs eigs() on Hamiltonian of Size 2^n','FontSize',33);
+xlabel('Order of Hamiltonian. 2^n','FontSize',33);
+ylabel('Total Compilation Time (s)','FontSize',33);
 
 
 
